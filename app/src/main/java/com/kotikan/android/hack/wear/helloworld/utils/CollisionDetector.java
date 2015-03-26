@@ -3,7 +3,7 @@ package com.kotikan.android.hack.wear.helloworld.utils;
 import android.os.Handler;
 import android.view.View;
 
-import com.kotikan.android.hack.wear.helloworld.eventbus.Bus;
+import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
@@ -20,7 +20,7 @@ public class CollisionDetector implements EventHandler {
         public void run() {
             boolean hit = CollisionMonitor.hasCollided(playerBlock, enemy);
             if (hit) {
-                Bus.bus().sendEvent(CollisionDetected.class);
+                Messages.bus().sendEvent(CollisionDetected.class);
             } else {
                 runDetector();
             }

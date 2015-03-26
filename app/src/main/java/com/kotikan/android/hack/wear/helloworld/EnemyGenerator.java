@@ -2,12 +2,13 @@ package com.kotikan.android.hack.wear.helloworld;
 
 import android.os.Handler;
 
-import com.kotikan.android.hack.wear.helloworld.eventbus.Bus;
+import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
+import com.kotikan.android.hack.wear.helloworld.utils.Timings;
 
 public class EnemyGenerator implements EventHandler {
     private final Handler handler;
@@ -24,7 +25,7 @@ public class EnemyGenerator implements EventHandler {
             if (!isAnimating) {
                 shouldSpawn = true;
                 isAnimating = true;
-                generateWithDelay(750);
+                generateWithDelay(Timings.ENEMY_SPAWN_MINIMUM_DELAY);
             }
         } else if (event == CollisionDetected.class) {
             shouldSpawn = false;
@@ -33,7 +34,7 @@ public class EnemyGenerator implements EventHandler {
     }
 
     private void generateWithDelay(int i) {
-        double spawnAt = Math.random() * 500d;
+        double spawnAt = Math.random() * Timings.ENEMY_SPAWN_RANDOMISER;
         handler.postDelayed(spawnEnemy(), i + (long) spawnAt);
     }
 
@@ -42,8 +43,8 @@ public class EnemyGenerator implements EventHandler {
             @Override
             public void run() {
                 if (shouldSpawn) {
-                    Bus.bus().sendEvent(SpawnEnemy.class);
-                    generateWithDelay(750);
+                    Messages.bus().sendEvent(SpawnEnemy.class);
+                    generateWithDelay(Timings.ENEMY_SPAWN_MINIMUM_DELAY);
                 }
             }
         };

@@ -6,14 +6,12 @@ import android.os.Handler;
 import android.support.wearable.view.WatchViewStub;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.kotikan.android.hack.wear.helloworld.eventbus.Bus;
+import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventBus;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.GameTimer;
@@ -38,7 +36,7 @@ public class MainActivity extends Activity {
                 final View enemy = stub.findViewById(R.id.enemy_block);
                 final TextView timer = (TextView) stub.findViewById(R.id.game_timer);
 
-                final EventBus eventBus = Bus.bus();
+                final EventBus eventBus = Messages.bus();
                 final EventHandler gameTimer = new GameTimer(timer);
                 eventBus.register(gameTimer, OnGameStart.class);
                 eventBus.register(gameTimer, CollisionDetected.class);

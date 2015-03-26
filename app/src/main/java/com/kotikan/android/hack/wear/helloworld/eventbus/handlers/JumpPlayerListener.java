@@ -10,13 +10,14 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetecte
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
+import com.kotikan.android.hack.wear.helloworld.utils.Timings;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class JumpPlayerListener implements EventHandler {
 
-    final private int jumpDuration = 600;
+    final private int jumpDuration = Timings.PLAYER_JUMP_DURATION;
     final private View playerBlock;
     boolean alreadyAnimating = false;
     boolean canJump = false;

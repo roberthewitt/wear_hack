@@ -8,6 +8,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
+import com.kotikan.android.hack.wear.helloworld.utils.Timings;
 
 public class TranslateEnemyListener implements EventHandler {
 
@@ -29,7 +30,7 @@ public class TranslateEnemyListener implements EventHandler {
                 animate = enemy.animate();
                 animate.translationXBy(-startX);
                 animate.setInterpolator(new LinearInterpolator());
-                animate.setDuration(800l);
+                animate.setDuration(Timings.ENEMY_SLIDE_DURATION);
                 animate.withStartAction(new Runnable() {
                     @Override
                     public void run() {
