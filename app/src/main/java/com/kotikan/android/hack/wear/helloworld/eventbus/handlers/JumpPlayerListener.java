@@ -6,13 +6,21 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class JumpPlayerListener implements EventHandler {
 
     final private int jumpDuration = 600;
     final private View playerBlock;
     boolean alreadyAnimating = false;
+    boolean canJump = false;
+    private final Set<ViewPropertyAnimator> animators = new HashSet<>();
 
     public JumpPlayerListener(View playerBlock) {
         this.playerBlock = playerBlock;
@@ -20,40 +28,56 @@ public class JumpPlayerListener implements EventHandler {
 
     @Override
     public void handleEvent(Object o, Class<? extends Event> event) {
-        if (!alreadyAnimating) {
-            alreadyAnimating = true;
+        if (event == OnGameStart.class) {
+            canJump = true;
+        } else if (event == OnScreenClicked.class) {
+            if (!alreadyAnimating && canJump) {
+                animators.clear();
+                alreadyAnimating = true;
 
-            final float playerHeight = playerBlock.getHeight();
-            final int jumpBy = (int) (playerHeight * 2.5f);
-
-            ViewPropertyAnimator rotateAnimation = playerBlock.animate();
-            rotateAnimation.rotationBy(180f);
-            rotateAnimation.setDuration(jumpDuration);
-            rotateAnimation.withEndAction(new Runnable() {
-                @Override
-                public void run() {
-                    alreadyAnimating = false;
-                }
-            });
-            rotateAnimation.start();
-
-
-            ViewPropertyAnimator upAnimator = playerBlock.animate();
-            upAnimator.translationYBy(-jumpBy);
-            upAnimator.setDuration(jumpDuration * 2 / 3);
-            upAnimator.setInterpolator(new DecelerateInterpolator(2f));
-            upAnimator.withEndAction(new Runnable() {
-                @Override
-                public void run() {
-                    ViewPropertyAnimator downAnimator = playerBlock.animate();
-                    downAnimator
-                            .translationYBy(jumpBy)
-                            .setDuration(jumpDuration  / 3)
-                            .setInterpolator(new AccelerateInterpolator(2f))
-                            .start();
-                }
-            });
-            upAnimator.start();
+                final float playerHeight = playerBlock.getHeight();
+                final int jumpBy = (int) (playerHeight * 2.5f);
+                animators.add(rotateAnimation());
+                animators.add(getJumpAnimator(jumpBy));
+            }
+        } else if (event == CollisionDetected.class) {
+            canJump = false;
+            alreadyAnimating = false;
+            for (ViewPropertyAnimator v : animators) v.cancel();
         }
+    }
+
+    private ViewPropertyAnimator getJumpAnimator(final int jumpBy) {
+        ViewPropertyAnimator upAnimator = playerBlock.animate();
+        upAnimator.translationYBy(-jumpBy);
+        upAnimator.setDuration(jumpDuration * 2 / 3);
+        upAnimator.setInterpolator(new DecelerateInterpolator(2f));
+        upAnimator.withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                ViewPropertyAnimator downAnimator = playerBlock.animate();
+                downAnimator
+                        .translationYBy(jumpBy)
+                        .setDuration(jumpDuration / 3)
+                        .setInterpolator(new AccelerateInterpolator(2f))
+                        .start();
+            }
+        });
+        upAnimator.start();
+        return upAnimator;
+    }
+
+    private ViewPropertyAnimator rotateAnimation() {
+        ViewPropertyAnimator rotateAnimation = playerBlock.animate();
+        rotateAnimation.rotationBy(180f);
+        rotateAnimation.setDuration(jumpDuration);
+        rotateAnimation.withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                alreadyAnimating = false;
+            }
+        });
+        rotateAnimation.start();
+        return rotateAnimation;
     }
 }

@@ -33,6 +33,8 @@ public class CollisionMonitorTest {
         assertEquals(false, CollisionMonitor.hasCollided(a, b));
     }
 
+    
+
     private Builder block() {
         return new Builder();
     }

@@ -1,7 +1,6 @@
 package com.kotikan.android.hack.wear.helloworld;
 
 import android.app.Activity;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.wearable.view.WatchViewStub;
@@ -13,7 +12,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.Bus;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventBus;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.EnterEnemy;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
@@ -37,12 +36,24 @@ public class MainActivity extends Activity {
                 final View enemy = stub.findViewById(R.id.enemy_block);
                 final TextView timer = (TextView) stub.findViewById(R.id.game_timer);
 
-
                 final EventBus eventBus = Bus.bus();
-                eventBus.register(new GameTimer(timer), OnGameStart.class);
-                eventBus.register(new JumpPlayerListener(playerBlock), OnScreenClicked.class);
-                eventBus.register(new TranslateEnemyListener(enemy), EnterEnemy.class);
-                eventBus.register(new EnemyGenerator(new Handler()), OnGameStart.class);
+                final EventHandler gameTimer = new GameTimer(timer);
+                eventBus.register(gameTimer, OnGameStart.class);
+                eventBus.register(gameTimer, CollisionDetected.class);
+
+                final EventHandler enemyGenerator = new EnemyGenerator(new Handler());
+                eventBus.register(enemyGenerator, OnGameStart.class);
+                eventBus.register(enemyGenerator, CollisionDetected.class);
+
+                EventHandler playerListener = new JumpPlayerListener(playerBlock);
+                eventBus.register(playerListener, OnScreenClicked.class);
+                eventBus.register(playerListener, CollisionDetected.class);
+                eventBus.register(playerListener, OnGameStart.class);
+
+                final EventHandler enemyListener = new TranslateEnemyListener(enemy);
+                eventBus.register(enemyListener, SpawnEnemy.class);
+                eventBus.register(enemyListener, CollisionDetected.class);
+
                 eventBus.register(new CollisionDetector(playerBlock, enemy), OnGameStart.class);
                 eventBus.sendEvent(OnGameStart.class);
             }

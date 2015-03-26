@@ -4,12 +4,15 @@ import android.os.Handler;
 
 import com.kotikan.android.hack.wear.helloworld.eventbus.Bus;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.EnterEnemy;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 
 public class EnemyGenerator implements EventHandler {
     private final Handler handler;
     private boolean isAnimating = false;
+    private boolean shouldSpawn = true;
 
     public EnemyGenerator(Handler handler) {
         this.handler = handler;
@@ -17,9 +20,15 @@ public class EnemyGenerator implements EventHandler {
 
     @Override
     public void handleEvent(Object o, Class<? extends Event> event) {
-        if (!isAnimating) {
-            isAnimating = true;
-            generateWithDelay(750);
+        if (event == OnGameStart.class) {
+            if (!isAnimating) {
+                shouldSpawn = true;
+                isAnimating = true;
+                generateWithDelay(750);
+            }
+        } else if (event == CollisionDetected.class) {
+            shouldSpawn = false;
+            isAnimating = false;
         }
     }
 
@@ -32,8 +41,10 @@ public class EnemyGenerator implements EventHandler {
         return new Runnable() {
             @Override
             public void run() {
-                Bus.bus().sendEvent(EnterEnemy.class);
-                generateWithDelay(750);
+                if (shouldSpawn) {
+                    Bus.bus().sendEvent(SpawnEnemy.class);
+                    generateWithDelay(750);
+                }
             }
         };
     }

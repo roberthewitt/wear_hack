@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.widget.TextView;
 
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.utils.JavaDateFactory;
@@ -15,12 +16,15 @@ public class GameTimer implements EventHandler {
     private final TextView timer;
     private NumberFormatter formatter;
     private boolean isRunning = false;
+    private boolean shouldUpdate = true;
 
     private final Runnable r = new Runnable() {
         @Override
         public void run() {
-            timer.setText(formatter.generate());
-            updateTextView();
+            if (shouldUpdate) {
+                timer.setText(formatter.generate());
+                updateTextView();
+            }
         }
     };
 
@@ -33,9 +37,13 @@ public class GameTimer implements EventHandler {
         if (event == OnGameStart.class) {
             formatter = new NumberFormatter(new JavaDateFactory());
             if (!isRunning) {
+                shouldUpdate = true;
                 isRunning = true;
                 updateTextView();
             }
+        } else if (event == CollisionDetected.class) {
+            isRunning = false;
+            shouldUpdate = false;
         }
     }
 
