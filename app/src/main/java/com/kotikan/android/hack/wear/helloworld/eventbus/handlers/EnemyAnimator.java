@@ -1,6 +1,5 @@
 package com.kotikan.android.hack.wear.helloworld.eventbus.handlers;
 
-import android.animation.Animator;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
@@ -71,7 +70,7 @@ public class EnemyAnimator implements EventHandler {
 
                 int startIndex = numberGenerator.generateBetween(0, 5);
                 int startColour = kotikanColours[startIndex];
-                int endColour   = kotikanColours[numberGenerator.generateBetween(0, 5, startIndex)];
+                int endColour = kotikanColours[numberGenerator.generateBetween(0, 5, startIndex)];
 
                 ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), startColour, endColour);
                 colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

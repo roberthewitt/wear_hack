@@ -76,7 +76,7 @@ public class PlayerAnimator implements EventHandler {
 
     private ViewPropertyAnimator rotateAnimation() {
         ViewPropertyAnimator rotateAnimation = playerBlock.animate();
-        rotateAnimation.rotationBy(180f);
+        rotateAnimation.rotationBy(360f);
         rotateAnimation.setDuration(jumpDuration);
         rotateAnimation.withEndAction(new Runnable() {
             @Override
