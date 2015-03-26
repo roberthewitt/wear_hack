@@ -18,6 +18,9 @@ public class RotatePlayerListener implements EventHandler {
     @Override
     public void handleEvent(Object o, Class<? extends Event> event) {
         if (!alreadyAnimating) {
+            final float playerHeight = playerBlock.getHeight();
+            final int jumpBy = (int) (playerHeight * 2.5f);
+
             alreadyAnimating = true;
             ViewPropertyAnimator animate = playerBlock.animate();
             animate.rotationBy(180f);
@@ -32,12 +35,12 @@ public class RotatePlayerListener implements EventHandler {
 
 
             ViewPropertyAnimator upAnimator = playerBlock.animate();
-            upAnimator.translationYBy(-100);
+            upAnimator.translationYBy(-jumpBy);
             upAnimator.setDuration(250);
             upAnimator.withEndAction(new Runnable() {
                 @Override
                 public void run() {
-                    playerBlock.animate().translationYBy(100).setDuration(250).start();
+                    playerBlock.animate().translationYBy(jumpBy).setDuration(250).start();
                 }
             });
             upAnimator.start();
