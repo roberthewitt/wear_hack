@@ -12,7 +12,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.utils.BlockState;
 import com.kotikan.android.hack.wear.helloworld.utils.Timings;
 
-public class TranslateEnemyListener implements EventHandler {
+public class EnemyAnimator implements EventHandler {
 
     private final View enemy;
     private boolean isAnimating = false;
@@ -20,7 +20,7 @@ public class TranslateEnemyListener implements EventHandler {
     private ViewPropertyAnimator animate;
     private BlockState initialState;
 
-    public TranslateEnemyListener(View enemy) {
+    public EnemyAnimator(View enemy) {
         this.enemy = enemy;
     }
 

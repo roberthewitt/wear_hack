@@ -16,7 +16,7 @@ import com.kotikan.android.hack.wear.helloworld.utils.Timings;
 import java.util.HashSet;
 import java.util.Set;
 
-public class JumpPlayerListener implements EventHandler {
+public class PlayerAnimator implements EventHandler {
 
     final private int jumpDuration = Timings.PLAYER_JUMP_DURATION;
     final private View playerBlock;
@@ -25,7 +25,7 @@ public class JumpPlayerListener implements EventHandler {
     private final Set<ViewPropertyAnimator> animators = new HashSet<>();
     private BlockState initialState;
 
-    public JumpPlayerListener(View playerBlock) {
+    public PlayerAnimator(View playerBlock) {
         this.playerBlock = playerBlock;
     }
 
