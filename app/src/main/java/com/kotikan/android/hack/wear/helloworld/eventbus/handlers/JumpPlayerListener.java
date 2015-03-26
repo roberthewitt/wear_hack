@@ -2,13 +2,15 @@ package com.kotikan.android.hack.wear.helloworld.eventbus.handlers;
 
 import android.view.View;
 import android.view.ViewPropertyAnimator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 
 public class JumpPlayerListener implements EventHandler {
 
-    final private int jumpDuration = 750;
+    final private int jumpDuration = 600;
     final private View playerBlock;
     boolean alreadyAnimating = false;
 
@@ -19,29 +21,36 @@ public class JumpPlayerListener implements EventHandler {
     @Override
     public void handleEvent(Object o, Class<? extends Event> event) {
         if (!alreadyAnimating) {
+            alreadyAnimating = true;
+
             final float playerHeight = playerBlock.getHeight();
             final int jumpBy = (int) (playerHeight * 2.5f);
 
-            alreadyAnimating = true;
-            ViewPropertyAnimator animate = playerBlock.animate();
-            animate.rotationBy(180f);
-            animate.setDuration(jumpDuration);
-            animate.withEndAction(new Runnable() {
+            ViewPropertyAnimator rotateAnimation = playerBlock.animate();
+            rotateAnimation.rotationBy(180f);
+            rotateAnimation.setDuration(jumpDuration);
+            rotateAnimation.withEndAction(new Runnable() {
                 @Override
                 public void run() {
                     alreadyAnimating = false;
                 }
             });
-            animate.start();
+            rotateAnimation.start();
 
 
             ViewPropertyAnimator upAnimator = playerBlock.animate();
             upAnimator.translationYBy(-jumpBy);
-            upAnimator.setDuration(jumpDuration / 2);
+            upAnimator.setDuration(jumpDuration * 2 / 3);
+            upAnimator.setInterpolator(new DecelerateInterpolator(2f));
             upAnimator.withEndAction(new Runnable() {
                 @Override
                 public void run() {
-                    playerBlock.animate().translationYBy(jumpBy).setDuration(jumpDuration/2).start();
+                    ViewPropertyAnimator downAnimator = playerBlock.animate();
+                    downAnimator
+                            .translationYBy(jumpBy)
+                            .setDuration(jumpDuration  / 3)
+                            .setInterpolator(new AccelerateInterpolator(2f))
+                            .start();
                 }
             });
             upAnimator.start();
