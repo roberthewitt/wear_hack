@@ -7,7 +7,7 @@
     tools:deviceIds="wear_round">
 
     <View
-        android:id="@+id/text"
+        android:id="@+id/player_block"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_alignParentBottom="true"
