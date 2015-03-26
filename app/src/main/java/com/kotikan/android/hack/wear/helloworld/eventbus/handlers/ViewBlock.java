@@ -1,6 +1,8 @@
-package com.kotikan.android.hack.wear.helloworld.utils;
+package com.kotikan.android.hack.wear.helloworld.eventbus.handlers;
 
 import android.view.View;
+
+import com.kotikan.android.hack.wear.helloworld.utils.Block;
 
 class ViewBlock implements Block {
 

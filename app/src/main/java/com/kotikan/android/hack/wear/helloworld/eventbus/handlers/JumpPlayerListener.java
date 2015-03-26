@@ -10,6 +10,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetecte
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
+import com.kotikan.android.hack.wear.helloworld.utils.BlockState;
 import com.kotikan.android.hack.wear.helloworld.utils.Timings;
 
 import java.util.HashSet;
@@ -22,6 +23,7 @@ public class JumpPlayerListener implements EventHandler {
     boolean alreadyAnimating = false;
     boolean canJump = false;
     private final Set<ViewPropertyAnimator> animators = new HashSet<>();
+    private BlockState initialState;
 
     public JumpPlayerListener(View playerBlock) {
         this.playerBlock = playerBlock;
@@ -31,8 +33,12 @@ public class JumpPlayerListener implements EventHandler {
     public void handleEvent(Object o, Class<? extends Event> event) {
         if (event == OnGameStart.class) {
             canJump = true;
+            if (initialState != null) {
+                initialState.setOnBlock(playerBlock);
+            }
         } else if (event == OnScreenClicked.class) {
             if (!alreadyAnimating && canJump) {
+                initialState = new BlockState(playerBlock);
                 animators.clear();
                 alreadyAnimating = true;
 

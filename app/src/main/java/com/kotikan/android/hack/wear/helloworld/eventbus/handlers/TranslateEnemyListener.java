@@ -7,7 +7,9 @@ import android.view.animation.LinearInterpolator;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
+import com.kotikan.android.hack.wear.helloworld.utils.BlockState;
 import com.kotikan.android.hack.wear.helloworld.utils.Timings;
 
 public class TranslateEnemyListener implements EventHandler {
@@ -16,6 +18,7 @@ public class TranslateEnemyListener implements EventHandler {
     private boolean isAnimating = false;
     private float startX;
     private ViewPropertyAnimator animate;
+    private BlockState initialState;
 
     public TranslateEnemyListener(View enemy) {
         this.enemy = enemy;
@@ -25,6 +28,7 @@ public class TranslateEnemyListener implements EventHandler {
     public void handleEvent(Object o, Class<? extends Event> event) {
         if (event == SpawnEnemy.class) {
             if (!isAnimating) {
+                initialState = new BlockState(enemy);
                 isAnimating = true;
                 startX = enemy.getX();
                 animate = enemy.animate();
@@ -50,6 +54,10 @@ public class TranslateEnemyListener implements EventHandler {
         } else if (event == CollisionDetected.class) {
             isAnimating = false;
             animate.cancel();
+        } else if (event == OnGameStart.class) {
+            if (initialState != null) {
+                initialState.setOnBlock(enemy);
+            }
         }
     }
 }

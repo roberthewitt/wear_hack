@@ -18,7 +18,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.GameTimer;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.JumpPlayerListener;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.TranslateEnemyListener;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.VibrateOnCollision;
-import com.kotikan.android.hack.wear.helloworld.utils.CollisionDetector;
+import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.CollisionDetector;
 
 public class MainActivity extends Activity {
 
@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
                 final EventHandler enemyListener = new TranslateEnemyListener(enemy);
                 eventBus.register(enemyListener, SpawnEnemy.class);
                 eventBus.register(enemyListener, CollisionDetected.class);
+                eventBus.register(enemyListener, OnGameStart.class);
 
                 eventBus.register(new CollisionDetector(playerBlock, enemy), OnGameStart.class);
             }
