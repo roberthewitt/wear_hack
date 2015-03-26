@@ -32,6 +32,7 @@ public class MainActivity extends Activity {
         eventBus.register(enemyGenerator, OnGameStart.class);
         eventBus.register(enemyGenerator, CollisionDetected.class);
 
+
         setContentView(R.layout.activity_main);
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
         stub.setOnClickListener(new ScreenClickSender());
@@ -41,10 +42,12 @@ public class MainActivity extends Activity {
                 final View playerBlock = stub.findViewById(R.id.player_block);
                 final View enemy = stub.findViewById(R.id.enemy_block);
                 final TextView timer = (TextView) stub.findViewById(R.id.game_timer);
+                final TextView clickToRetry = (TextView) stub.findViewById(R.id.game_over_click_to_retry);
 
                 final EventHandler gameTimer = new GameTimer(timer);
                 eventBus.register(gameTimer, OnGameStart.class);
                 eventBus.register(gameTimer, CollisionDetected.class);
+                eventBus.register(new GameEndScreen(clickToRetry), CollisionDetected.class);
 
                 EventHandler playerListener = new JumpPlayerListener(playerBlock);
                 eventBus.register(playerListener, OnScreenClicked.class);
