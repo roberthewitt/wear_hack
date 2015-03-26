@@ -17,6 +17,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.GameTimer;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.JumpPlayerListener;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.TranslateEnemyListener;
+import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.VibrateOnCollision;
 import com.kotikan.android.hack.wear.helloworld.utils.CollisionDetector;
 
 public class MainActivity extends Activity {
@@ -25,6 +26,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Handler handler = new Handler();
+        final EventBus eventBus = Messages.bus();
+        eventBus.register(new VibrateOnCollision(this), CollisionDetected.class);
+        final EventHandler enemyGenerator = new EnemyGenerator(handler);
+        eventBus.register(enemyGenerator, OnGameStart.class);
+        eventBus.register(enemyGenerator, CollisionDetected.class);
 
         setContentView(R.layout.activity_main);
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
@@ -36,14 +42,9 @@ public class MainActivity extends Activity {
                 final View enemy = stub.findViewById(R.id.enemy_block);
                 final TextView timer = (TextView) stub.findViewById(R.id.game_timer);
 
-                final EventBus eventBus = Messages.bus();
                 final EventHandler gameTimer = new GameTimer(timer);
                 eventBus.register(gameTimer, OnGameStart.class);
                 eventBus.register(gameTimer, CollisionDetected.class);
-
-                final EventHandler enemyGenerator = new EnemyGenerator(new Handler());
-                eventBus.register(enemyGenerator, OnGameStart.class);
-                eventBus.register(enemyGenerator, CollisionDetected.class);
 
                 EventHandler playerListener = new JumpPlayerListener(playerBlock);
                 eventBus.register(playerListener, OnScreenClicked.class);
@@ -55,14 +56,14 @@ public class MainActivity extends Activity {
                 eventBus.register(enemyListener, CollisionDetected.class);
 
                 eventBus.register(new CollisionDetector(playerBlock, enemy), OnGameStart.class);
-
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        eventBus.sendEvent(OnGameStart.class);
-                    }
-                }, 500);
             }
         });
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                eventBus.sendEvent(OnGameStart.class);
+            }
+        }, 1000);
     }
 }
