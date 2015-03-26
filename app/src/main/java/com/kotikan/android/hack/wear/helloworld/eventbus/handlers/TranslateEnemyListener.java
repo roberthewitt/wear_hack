@@ -56,7 +56,7 @@ public class TranslateEnemyListener implements EventHandler {
             animate.cancel();
         } else if (event == OnGameStart.class) {
             if (initialState != null) {
-                initialState.setOnBlock(enemy);
+                initialState.setOnBlock(enemy, View.INVISIBLE);
             }
         }
     }

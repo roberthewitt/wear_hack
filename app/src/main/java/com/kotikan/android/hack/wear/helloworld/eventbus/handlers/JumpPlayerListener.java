@@ -34,7 +34,7 @@ public class JumpPlayerListener implements EventHandler {
         if (event == OnGameStart.class) {
             canJump = true;
             if (initialState != null) {
-                initialState.setOnBlock(playerBlock);
+                initialState.setOnBlock(playerBlock, View.VISIBLE);
             }
         } else if (event == OnScreenClicked.class) {
             if (!alreadyAnimating && canJump) {

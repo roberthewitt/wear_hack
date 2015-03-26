@@ -12,9 +12,10 @@ public class BlockState {
         rotation = 0;
     }
 
-    public void setOnBlock(View block) {
+    public void setOnBlock(View block, int visibility) {
         block.setX(x);
         block.setY(y);
         block.setRotation(rotation);
+        block.setVisibility(visibility);
     }
 }
