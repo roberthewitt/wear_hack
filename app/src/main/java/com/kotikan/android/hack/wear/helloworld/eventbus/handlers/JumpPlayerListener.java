@@ -8,7 +8,8 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 
 public class JumpPlayerListener implements EventHandler {
 
-    private final View playerBlock;
+    final private int jumpDuration = 750;
+    final private View playerBlock;
     boolean alreadyAnimating = false;
 
     public JumpPlayerListener(View playerBlock) {
@@ -24,7 +25,7 @@ public class JumpPlayerListener implements EventHandler {
             alreadyAnimating = true;
             ViewPropertyAnimator animate = playerBlock.animate();
             animate.rotationBy(180f);
-            animate.setDuration(500);
+            animate.setDuration(jumpDuration);
             animate.withEndAction(new Runnable() {
                 @Override
                 public void run() {
@@ -36,11 +37,11 @@ public class JumpPlayerListener implements EventHandler {
 
             ViewPropertyAnimator upAnimator = playerBlock.animate();
             upAnimator.translationYBy(-jumpBy);
-            upAnimator.setDuration(250);
+            upAnimator.setDuration(jumpDuration / 2);
             upAnimator.withEndAction(new Runnable() {
                 @Override
                 public void run() {
-                    playerBlock.animate().translationYBy(jumpBy).setDuration(250).start();
+                    playerBlock.animate().translationYBy(jumpBy).setDuration(jumpDuration/2).start();
                 }
             });
             upAnimator.start();
