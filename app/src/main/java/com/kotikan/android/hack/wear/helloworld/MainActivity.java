@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.wearable.view.WatchViewStub;
 import android.view.View;
+import android.widget.TextView;
 
 import com.kotikan.android.hack.wear.helloworld.eventbus.Bus;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.EnterEnemy;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
+import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.GameTimer;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.JumpPlayerListener;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.TranslateEnemyListener;
 
@@ -25,14 +28,16 @@ public class MainActivity extends Activity {
             public void onLayoutInflated(WatchViewStub stub) {
                 final View playerBlock = stub.findViewById(R.id.player_block);
                 final View enemy = stub.findViewById(R.id.enemy_block);
+                final TextView timer = (TextView) stub.findViewById(R.id.game_timer);
 
+                Bus.bus().register(new GameTimer(timer), OnGameStart.class);
                 Bus.bus().register(new JumpPlayerListener(playerBlock), OnScreenClicked.class);
                 Bus.bus().register(new TranslateEnemyListener(enemy), EnterEnemy.class);
+                Bus.bus().register(new EnemyGenerator(new Handler()), OnGameStart.class);
+
+
+                Bus.bus().sendEvent(OnGameStart.class);
             }
         });
-
-        Handler handler = new Handler();
-        new EnemyGenerator(handler).generate();
     }
-
 }

@@ -6,6 +6,19 @@
     tools:context=".MainActivity"
     tools:deviceIds="wear_round">
 
+
+    <TextView
+        android:id="@+id/game_timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="35dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        tools:text="00m:00s:000m"
+        />
+
     <View
         android:id="@+id/player_block"
         android:layout_width="35dp"
