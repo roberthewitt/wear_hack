@@ -46,7 +46,8 @@
         android:textColor="#dd000000"
         android:textSize="30sp"
         android:gravity="center"
-        android:text="Click to Retry"
+        android:text="Tap to Jump"
+        tools:visibility="visible"
         />
 
 </RelativeLayout>
