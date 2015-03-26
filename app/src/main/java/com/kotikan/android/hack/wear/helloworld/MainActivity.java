@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
         final Handler handler = new Handler();
         final EventBus eventBus = Messages.bus();
         eventBus.register(new VibrateOnCollision(this), CollisionDetected.class);
-        final EventHandler enemyGenerator = new EnemyGenerator(handler);
+        final EventHandler enemyGenerator = new Spawner(handler);
         eventBus.register(enemyGenerator, OnGameStart.class);
         eventBus.register(enemyGenerator, CollisionDetected.class);
 

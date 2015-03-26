@@ -10,12 +10,13 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.utils.Timings;
 
-public class EnemyGenerator implements EventHandler {
+public class Spawner implements EventHandler {
     private final Handler handler;
     private boolean isAnimating = false;
     private boolean shouldSpawn = true;
+    private int enemyCounter = 0;
 
-    public EnemyGenerator(Handler handler) {
+    public Spawner(Handler handler) {
         this.handler = handler;
     }
 
@@ -35,14 +36,15 @@ public class EnemyGenerator implements EventHandler {
 
     private void generateWithDelay(int i) {
         double spawnAt = Math.random() * Timings.ENEMY_SPAWN_RANDOMISER;
-        handler.postDelayed(spawnEnemy(), i + (long) spawnAt);
+        enemyCounter++;
+        handler.postDelayed(spawnEnemy(enemyCounter), i + (long) spawnAt);
     }
 
-    private Runnable spawnEnemy() {
+    private Runnable spawnEnemy(final int spawnEnemyNumber) {
         return new Runnable() {
             @Override
             public void run() {
-                if (shouldSpawn) {
+                if (shouldSpawn && enemyCounter == spawnEnemyNumber) {
                     Messages.bus().sendEvent(SpawnEnemy.class);
                     generateWithDelay(Timings.ENEMY_SPAWN_MINIMUM_DELAY);
                 }
