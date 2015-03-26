@@ -6,12 +6,12 @@ import android.view.ViewPropertyAnimator;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 
-public class RotatePlayerListener implements EventHandler {
+public class JumpPlayerListener implements EventHandler {
 
     private final View playerBlock;
     boolean alreadyAnimating = false;
 
-    public RotatePlayerListener(View playerBlock) {
+    public JumpPlayerListener(View playerBlock) {
         this.playerBlock = playerBlock;
     }
 

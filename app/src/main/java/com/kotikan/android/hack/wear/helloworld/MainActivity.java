@@ -1,17 +1,16 @@
 package com.kotikan.android.hack.wear.helloworld;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.wearable.view.WatchViewStub;
 import android.view.View;
 
 import com.kotikan.android.hack.wear.helloworld.eventbus.Bus;
-import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.EnterEnemy;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
-import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.RotatePlayerListener;
+import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.JumpPlayerListener;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.TranslateEnemyListener;
-import com.kotikan.android.hack.wear.helloworld.logic.GameLoop;
 
 public class MainActivity extends Activity {
 
@@ -27,10 +26,13 @@ public class MainActivity extends Activity {
                 final View playerBlock = stub.findViewById(R.id.player_block);
                 final View enemy = stub.findViewById(R.id.enemy_block);
 
-                Bus.bus().register(new RotatePlayerListener(playerBlock), OnScreenClicked.class);
-                Bus.bus().register(new TranslateEnemyListener(enemy), OnScreenClicked.class);
+                Bus.bus().register(new JumpPlayerListener(playerBlock), OnScreenClicked.class);
+                Bus.bus().register(new TranslateEnemyListener(enemy), EnterEnemy.class);
             }
         });
+
+        Handler handler = new Handler();
+        new EnemyGenerator(handler).generate();
     }
 
 }

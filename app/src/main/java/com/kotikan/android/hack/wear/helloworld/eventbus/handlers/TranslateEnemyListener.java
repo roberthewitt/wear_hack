@@ -1,14 +1,17 @@
 package com.kotikan.android.hack.wear.helloworld.eventbus.handlers;
 
 import android.view.View;
+import android.view.ViewPropertyAnimator;
+import android.view.animation.LinearInterpolator;
 
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
-import com.kotikan.android.hack.wear.helloworld.logic.GameLoop;
 
 public class TranslateEnemyListener implements EventHandler {
 
     private final View enemy;
+    private boolean isAnimating = false;
+    private float startX;
 
     public TranslateEnemyListener(View enemy) {
         this.enemy = enemy;
@@ -16,6 +19,22 @@ public class TranslateEnemyListener implements EventHandler {
 
     @Override
     public void handleEvent(Object o, Class<? extends Event> event) {
-        GameLoop.createWith(enemy);
+        if (!isAnimating) {
+            isAnimating = true;
+            startX = enemy.getX();
+            ViewPropertyAnimator animate = enemy.animate();
+            animate.translationXBy(-startX);
+            animate.setInterpolator(new LinearInterpolator());
+            animate.setDuration(800l);
+            animate.withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    isAnimating = false;
+                    enemy.setX(startX);
+                }
+            });
+            animate.start();
+        }
+
     }
 }

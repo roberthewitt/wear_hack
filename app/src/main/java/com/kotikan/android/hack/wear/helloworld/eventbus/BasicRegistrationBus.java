@@ -1,5 +1,6 @@
 package com.kotikan.android.hack.wear.helloworld.eventbus;
 
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.EnterEnemy;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 
 import java.util.HashMap;
@@ -19,6 +20,11 @@ class BasicRegistrationBus implements EventBus {
                 h.handleEvent(o, event);
             }
         }
+    }
+
+    @Override
+    public void sendEvent(Class<EnterEnemy> enterEnemyClass) {
+        sendEvent(null, enterEnemyClass);
     }
 
     @Override
