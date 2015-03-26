@@ -5,6 +5,8 @@ public class CollisionMonitor {
     private CollisionMonitor(){}
 
     public static boolean hasCollided(Block a, Block b) {
-        return  Math.abs(a.x() - b.x()) <= a.width();
+        boolean xHit = Math.abs(a.x() - b.x()) <= a.width();
+        boolean yHit = Math.abs(a.y() - b.y()) <= a.height();
+        return xHit && yHit;
     }
 }

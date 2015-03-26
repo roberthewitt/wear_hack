@@ -4,4 +4,8 @@ public interface Block {
     int x();
 
     int width();
+
+    int y();
+
+    int height();
 }

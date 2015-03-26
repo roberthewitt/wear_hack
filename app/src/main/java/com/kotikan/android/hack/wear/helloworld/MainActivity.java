@@ -26,6 +26,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Handler handler = new Handler();
+
         setContentView(R.layout.activity_main);
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
         stub.setOnClickListener(new ScreenClickSender());
@@ -55,16 +57,14 @@ public class MainActivity extends Activity {
                 eventBus.register(enemyListener, CollisionDetected.class);
 
                 eventBus.register(new CollisionDetector(playerBlock, enemy), OnGameStart.class);
-                eventBus.sendEvent(OnGameStart.class);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        eventBus.sendEvent(OnGameStart.class);
+                    }
+                }, 500);
             }
         });
-
-
-        Bus.bus().register(new EventHandler() {
-            @Override
-            public void handleEvent(Object o, Class<? extends Event> event) {
-                Toast.makeText(MainActivity.this, "hit", Toast.LENGTH_SHORT).show();
-            }
-        }, CollisionDetected.class);
     }
 }

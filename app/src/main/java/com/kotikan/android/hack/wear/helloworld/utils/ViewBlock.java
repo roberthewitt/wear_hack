@@ -6,9 +6,13 @@ class ViewBlock implements Block {
 
     private final View view;
 
+    ViewBlock(View view) {
+        this.view = view;
+    }
+
     @Override
     public int x() {
-        return  (int) view.getX();
+        return (int) view.getX();
     }
 
     @Override
@@ -16,7 +20,13 @@ class ViewBlock implements Block {
         return view.getWidth();
     }
 
-    ViewBlock(View view) {
-        this.view = view;
+    @Override
+    public int y() {
+        return (int) view.getY();
+    }
+
+    @Override
+    public int height() {
+        return view.getHeight();
     }
 }
