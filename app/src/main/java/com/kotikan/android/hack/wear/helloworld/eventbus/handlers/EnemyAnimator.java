@@ -1,5 +1,9 @@
 package com.kotikan.android.hack.wear.helloworld.eventbus.handlers;
 
+import android.animation.Animator;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.LinearInterpolator;
@@ -10,14 +14,27 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.utils.BlockState;
+import com.kotikan.android.hack.wear.helloworld.utils.NumberGenerator;
 import com.kotikan.android.hack.wear.helloworld.utils.Timings;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class EnemyAnimator implements EventHandler {
 
+    private final int kRed = Color.argb(255, 220, 4, 81);
+    private final int kPurple = Color.argb(255, 128, 55, 155);
+    private final int kBlue = Color.argb(255, 0, 169, 224);
+    private final int kGreen = Color.argb(255, 105, 190, 40);
+    private final int kYellow = Color.argb(255, 234, 171, 0);
+    private final int kOrange = Color.argb(255, 224, 82, 6);
+    private final int[] kotikanColours = new int[]{kRed, kPurple, kBlue, kGreen, kYellow, kOrange};
+
+    final private Set<ViewPropertyAnimator> animators = new HashSet<>();
+    private final NumberGenerator numberGenerator = new NumberGenerator();
     private final View enemy;
     private boolean isAnimating = false;
     private float startX;
-    private ViewPropertyAnimator animate;
     private BlockState initialState;
 
     public EnemyAnimator(View enemy) {
@@ -31,7 +48,7 @@ public class EnemyAnimator implements EventHandler {
                 initialState = new BlockState(enemy);
                 isAnimating = true;
                 startX = enemy.getX();
-                animate = enemy.animate();
+                ViewPropertyAnimator animate = enemy.animate();
                 animate.translationXBy(-startX);
                 animate.setInterpolator(new LinearInterpolator());
                 animate.setDuration(Timings.ENEMY_SLIDE_DURATION);
@@ -50,10 +67,25 @@ public class EnemyAnimator implements EventHandler {
                     }
                 });
                 animate.start();
+                animators.add(animate);
+
+                int startIndex = numberGenerator.generateBetween(0, 5);
+                int startColour = kotikanColours[startIndex];
+                int endColour   = kotikanColours[numberGenerator.generateBetween(0, 5, startIndex)];
+
+                ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), startColour, endColour);
+                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animator) {
+                        enemy.setBackgroundColor((Integer) animator.getAnimatedValue());
+                    }
+                });
+                colorAnimation.setDuration(Timings.ENEMY_SLIDE_DURATION);
+                colorAnimation.start();
             }
         } else if (event == CollisionDetected.class) {
             isAnimating = false;
-            animate.cancel();
+            for (ViewPropertyAnimator p : animators) p.cancel();
         } else if (event == OnGameStart.class) {
             if (initialState != null) {
                 initialState.setOnBlock(enemy, View.INVISIBLE);
