@@ -25,12 +25,19 @@ public class TranslateEnemyListener implements EventHandler {
             ViewPropertyAnimator animate = enemy.animate();
             animate.translationXBy(-startX);
             animate.setInterpolator(new LinearInterpolator());
-            animate.setDuration(800l);
+            animate.setDuration(1000l);
+            animate.withStartAction(new Runnable() {
+                @Override
+                public void run() {
+                    enemy.setVisibility(View.VISIBLE);
+                }
+            });
             animate.withEndAction(new Runnable() {
                 @Override
                 public void run() {
                     isAnimating = false;
                     enemy.setX(startX);
+                    enemy.setVisibility(View.GONE);
                 }
             });
             animate.start();
