@@ -8,8 +8,8 @@ import android.view.animation.DecelerateInterpolator;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.utils.BlockState;
 import com.kotikan.android.hack.wear.helloworld.utils.Timings;
 
@@ -21,7 +21,7 @@ public class PlayerAnimator implements EventHandler {
     final private int jumpDuration = Timings.PLAYER_JUMP_DURATION;
     final private View playerBlock;
     boolean alreadyAnimating = false;
-    boolean canJump = false;
+    boolean canJump = true;
     private final Set<ViewPropertyAnimator> animators = new HashSet<>();
     private BlockState initialState;
 
@@ -31,7 +31,7 @@ public class PlayerAnimator implements EventHandler {
 
     @Override
     public void handleEvent(Object o, Class<? extends Event> event) {
-        if (event == OnGameStart.class) {
+        if (event == ResetGameState.class) {
             canJump = true;
             if (initialState != null) {
                 initialState.setOnBlock(playerBlock, View.VISIBLE);

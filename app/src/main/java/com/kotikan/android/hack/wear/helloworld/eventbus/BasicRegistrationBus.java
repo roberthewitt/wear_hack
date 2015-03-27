@@ -28,7 +28,6 @@ class BasicRegistrationBus implements EventBus {
 
     @Override
     public void register(EventHandler eventHandler, Class<? extends Event> event) {
-
         Set<EventHandler> set = handlers.get(event);
         if (set == null) {
             set = new HashSet<>();
@@ -36,5 +35,13 @@ class BasicRegistrationBus implements EventBus {
         }
 
         set.add(eventHandler);
+    }
+
+    @Override
+    public void unRegister(EventHandler handler) {
+        final Set<Class<? extends Event>> classes = handlers.keySet();
+        for (Class<? extends Event> eventClass : classes) {
+            handlers.get(eventClass).remove(handler);
+        }
     }
 }

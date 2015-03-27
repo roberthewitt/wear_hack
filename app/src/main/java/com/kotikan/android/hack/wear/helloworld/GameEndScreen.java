@@ -7,7 +7,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 
 public class GameEndScreen implements EventHandler {
 
@@ -19,7 +19,7 @@ public class GameEndScreen implements EventHandler {
             @Override
             public void onClick(View v) {
                 GameEndScreen.this.clickToRetry.setVisibility(View.GONE);
-                Messages.bus().sendEvent(OnGameStart.class);
+                Messages.bus().sendEvent(ResetGameState.class);
             }
         });
     }

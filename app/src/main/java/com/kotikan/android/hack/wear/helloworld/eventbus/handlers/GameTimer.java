@@ -7,10 +7,13 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.utils.JavaDateFactory;
 import com.kotikan.android.hack.wear.helloworld.utils.NumberFormatter;
 
 public class GameTimer implements EventHandler {
+
+    static private final String DEFAULT_START_STATE = "00m:00s:000m";
 
     private final Handler handler = new Handler();
     private final TextView timer;
@@ -44,6 +47,8 @@ public class GameTimer implements EventHandler {
         } else if (event == CollisionDetected.class) {
             isRunning = false;
             shouldUpdate = false;
+        } else if (event == ResetGameState.class) {
+            timer.setText(DEFAULT_START_STATE);
         }
     }
 

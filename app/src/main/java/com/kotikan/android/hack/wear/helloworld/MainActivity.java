@@ -11,6 +11,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventBus;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
@@ -22,13 +23,22 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.CollisionDetec
 
 public class MainActivity extends Activity {
 
+    private EventHandler gameTimer;
+    private EventHandler endScreen;
+    private EventHandler playerListener;
+    private EventHandler enemyListener;
+    private EventHandler collisionDetector;
+    private EventHandler enemyGenerator;
+    private EventHandler vibrateOnCollision;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Handler handler = new Handler();
         final EventBus eventBus = Messages.bus();
-        eventBus.register(new VibrateOnCollision(this), CollisionDetected.class);
-        final EventHandler enemyGenerator = new Spawner(handler);
+        vibrateOnCollision = new VibrateOnCollision(this);
+        eventBus.register(vibrateOnCollision, CollisionDetected.class);
+        enemyGenerator = new Spawner(handler);
         eventBus.register(enemyGenerator, OnGameStart.class);
         eventBus.register(enemyGenerator, CollisionDetected.class);
 
@@ -44,22 +54,26 @@ public class MainActivity extends Activity {
                 final TextView timer = (TextView) stub.findViewById(R.id.game_timer);
                 final TextView clickToRetry = (TextView) stub.findViewById(R.id.game_over_click_to_retry);
 
-                final EventHandler gameTimer = new GameTimer(timer);
+                gameTimer = new GameTimer(timer);
                 eventBus.register(gameTimer, OnGameStart.class);
                 eventBus.register(gameTimer, CollisionDetected.class);
-                eventBus.register(new GameEndScreen(clickToRetry), CollisionDetected.class);
+                eventBus.register(gameTimer, ResetGameState.class);
 
-                EventHandler playerListener = new PlayerAnimator(playerBlock);
+                endScreen = new GameEndScreen(clickToRetry);
+                eventBus.register(endScreen, CollisionDetected.class);
+
+                playerListener = new PlayerAnimator(playerBlock);
                 eventBus.register(playerListener, OnScreenClicked.class);
                 eventBus.register(playerListener, CollisionDetected.class);
-                eventBus.register(playerListener, OnGameStart.class);
+                eventBus.register(playerListener, ResetGameState.class);
 
-                final EventHandler enemyListener = new EnemyAnimator(enemy);
+                enemyListener = new EnemyAnimator(enemy);
                 eventBus.register(enemyListener, SpawnEnemy.class);
                 eventBus.register(enemyListener, CollisionDetected.class);
-                eventBus.register(enemyListener, OnGameStart.class);
+                eventBus.register(enemyListener, ResetGameState.class);
 
-                eventBus.register(new CollisionDetector(playerBlock, enemy), OnGameStart.class);
+                collisionDetector = new CollisionDetector(playerBlock, enemy);
+                eventBus.register(collisionDetector, OnGameStart.class);
             }
         });
 
@@ -69,5 +83,17 @@ public class MainActivity extends Activity {
                 eventBus.sendEvent(OnGameStart.class);
             }
         }, 1000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Messages.bus().unRegister(gameTimer);
+        Messages.bus().unRegister(endScreen);
+        Messages.bus().unRegister(playerListener);
+        Messages.bus().unRegister(enemyListener);
+        Messages.bus().unRegister(collisionDetector);
+        Messages.bus().unRegister(enemyGenerator);
+        Messages.bus().unRegister(vibrateOnCollision);
     }
 }

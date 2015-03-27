@@ -9,4 +9,6 @@ public interface EventBus {
     void sendEvent(Class<? extends Event> event);
 
     void register(EventHandler eventHandler, Class<? extends Event> event);
+
+    void unRegister(EventHandler handler);
 }

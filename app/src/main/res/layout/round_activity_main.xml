@@ -40,7 +40,6 @@
         android:visibility="invisible" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/game_over_click_to_retry"
         android:background="#aaffffff"
         android:layout_width="match_parent"
@@ -49,6 +48,7 @@
         android:textSize="30sp"
         android:gravity="center"
         android:text="Tap to Jump"
+        android:visibility="gone"
         tools:visibility="visible"
         />
 

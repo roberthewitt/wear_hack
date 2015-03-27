@@ -11,6 +11,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.utils.BlockState;
 import com.kotikan.android.hack.wear.helloworld.utils.NumberGenerator;
@@ -85,7 +86,7 @@ public class EnemyAnimator implements EventHandler {
         } else if (event == CollisionDetected.class) {
             isAnimating = false;
             for (ViewPropertyAnimator p : animators) p.cancel();
-        } else if (event == OnGameStart.class) {
+        } else if (event == ResetGameState.class) {
             if (initialState != null) {
                 initialState.setOnBlock(enemy, View.INVISIBLE);
             }
