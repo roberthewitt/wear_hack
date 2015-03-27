@@ -32,7 +32,7 @@ public class EnemyViewBlock extends ViewBlock implements EnemyBlock {
 
     @Override
     public void grantsLifeUp(boolean lifeUp) {
-        int resId = lifeUp ? R.mipmap.ic_launcher : 0;
+        int resId = lifeUp ? R.mipmap.ic_heart_full : 0;
         view.setImageResource(resId);
         this.lifeUp = lifeUp;
     }

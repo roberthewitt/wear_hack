@@ -1,8 +1,9 @@
 package com.kotikan.android.hack.wear.helloworld.eventbus.handlers;
 
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.kotikan.android.hack.wear.helloworld.R;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.LifeChanged;
@@ -22,15 +23,15 @@ public class LifeDisplayer implements EventHandler {
             int lives = changed.lives;
             int maxChildIndex = lifeContainer.getChildCount() - 1;
             for (int i = 0; i <= maxChildIndex; i++) {
-                final View childAt = lifeContainer.getChildAt(i);
-                int visibility;
+                final ImageView childAt = (ImageView) lifeContainer.getChildAt(i);
+                int heartImg;
                 if (lives > 0) {
                     lives--;
-                    visibility = View.VISIBLE;
+                    heartImg = R.mipmap.ic_heart_full;
                 } else {
-                    visibility = View.GONE;
+                    heartImg = R.mipmap.ic_heart_empty;
                 }
-                childAt.setVisibility(visibility);
+                childAt.setImageResource(heartImg);
             }
         }
     }
