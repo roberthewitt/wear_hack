@@ -43,6 +43,7 @@ public class Spawner implements EventHandler {
             @Override
             public void run() {
                 if (spawnEnemyNumber == nextExpectedEnemy  && enemyCounter == spawnEnemyNumber) {
+                    nextExpectedEnemy++;
                     Messages.bus().sendEvent(SpawnEnemy.class);
                     generateWithDelay(GameConstants.ENEMY_SPAWN_MINIMUM_DELAY);
                 }
