@@ -64,6 +64,8 @@ public class EnemyAnimator implements EventHandler {
         } else if (event == ResetGameState.class) {
             initialState.setOnBlock(enemy, View.INVISIBLE);
         } else if (event == NumberOfLivesResponse.class) {
+            initialState.setOnBlock(enemy, View.VISIBLE);
+
             final NumberOfLivesResponse livesResponse = (NumberOfLivesResponse) o;
 
             boolean spawnHeartBlock = heartLogic.shouldSpawnHeart(numberGenerator, livesResponse.lifeCount);
@@ -73,6 +75,8 @@ public class EnemyAnimator implements EventHandler {
             isAnimating = true;
             startX = enemy.x();
 
+            int y = enemy.y();
+            enemy.setY(y - (enemy.height() * 3 / 4));
 
             ViewPropertyAnimator animate = enemy.animate();
             animate.translationXBy(-startX);

@@ -30,7 +30,7 @@ public class ViewBlock implements Block {
 
     @Override
     public int height() {
-        return view.getHeight();
+        return(int) ((float) view.getHeight() * view.getScaleY());
     }
 
     @Override
