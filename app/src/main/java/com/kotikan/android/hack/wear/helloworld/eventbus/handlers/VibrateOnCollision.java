@@ -20,7 +20,7 @@ public class VibrateOnCollision implements EventHandler {
         if (event == CollisionDetected.class) {
             Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
             if (v != null) {
-                v.vibrate(150);
+                v.vibrate(50);
             }
         }
     }
