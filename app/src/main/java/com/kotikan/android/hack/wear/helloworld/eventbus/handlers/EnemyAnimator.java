@@ -98,19 +98,23 @@ public class EnemyAnimator implements EventHandler {
             animate.start();
             animators.add(animate);
 
-            int startIndex = numberGenerator.generateBetween(0, 5);
-            int startColour = kotikanColours[startIndex];
-            int endColour = kotikanColours[numberGenerator.generateBetween(0, 5, startIndex)];
+            if (spawnHeartBlock) {
+                enemy.setBackgroundColor(Color.WHITE);
+            } else {
+                int startIndex = numberGenerator.generateBetween(0, 5);
+                int startColour = kotikanColours[startIndex];
+                int endColour = kotikanColours[numberGenerator.generateBetween(0, 5, startIndex)];
 
-            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), startColour, endColour);
-            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    enemy.setBackgroundColor((Integer) animator.getAnimatedValue());
-                }
-            });
-            colorAnimation.setDuration(GameConstants.ENEMY_SLIDE_DURATION);
-            colorAnimation.start();
+                ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), startColour, endColour);
+                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animator) {
+                        enemy.setBackgroundColor((Integer) animator.getAnimatedValue());
+                    }
+                });
+                colorAnimation.setDuration(GameConstants.ENEMY_SLIDE_DURATION);
+                colorAnimation.start();
+            }
         }
     }
 }
