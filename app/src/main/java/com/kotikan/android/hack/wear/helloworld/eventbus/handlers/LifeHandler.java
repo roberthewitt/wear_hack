@@ -7,6 +7,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetecte
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameOver;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameStart;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.LifeChanged;
 import com.kotikan.android.hack.wear.helloworld.utils.GameConstants;
 
 import java.util.HashSet;
@@ -31,6 +32,7 @@ public class LifeHandler implements EventHandler {
                 } else {
                     lives--;
                 }
+                Messages.bus().sendEvent(new LifeChanged(lives), LifeChanged.class);
                 if (lives == 0) {
                     Messages.bus().sendEvent(GameOver.class);
                 }

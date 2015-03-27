@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.wearable.view.WatchViewStub;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kotikan.android.hack.wear.helloworld.abstractions.EnemyBlock;
@@ -18,6 +19,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameOver;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameStart;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.LifeChanged;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
@@ -25,6 +27,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.CollisionDetec
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.CountdownToStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.EnemyAnimator;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.GameTimer;
+import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.LifeDisplayer;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.LifeHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.PlayerAnimator;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.VibrateOnCollision;
@@ -40,6 +43,7 @@ public class MainActivity extends Activity {
     private EventHandler vibrateOnCollision;
     private EventHandler countDownToStart;
     private EventHandler lifeHandler;
+    private EventHandler lifeDisplayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,11 @@ public class MainActivity extends Activity {
                 final ViewTextOutput timer = new ViewTextOutput((TextView) stub.findViewById(R.id.game_timer));
                 final TouchInput clickToRetry = new ViewTouchInput(stub.findViewById(R.id.game_over_click_to_retry));
                 final ViewTextOutput textOutput = new ViewTextOutput((TextView) stub.findViewById(R.id.countdown_to_start));
+                final ViewGroup lifeCounter = (ViewGroup) stub.findViewById(R.id.life_container);
+
+                lifeDisplayer = new LifeDisplayer(lifeCounter);
+                eventBus.register(lifeDisplayer, LifeChanged.class);
+                eventBus.register(lifeDisplayer, GameStart.class);
 
                 gameTimer = new GameTimer(timer);
                 eventBus.register(gameTimer, GameStart.class);
@@ -115,5 +124,7 @@ public class MainActivity extends Activity {
         Messages.bus().unRegister(collisionDetector);
         Messages.bus().unRegister(enemyGenerator);
         Messages.bus().unRegister(vibrateOnCollision);
+        Messages.bus().unRegister(lifeHandler);
+        Messages.bus().unRegister(lifeDisplayer);
     }
 }

@@ -3,20 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="RtlHardcoded"
     tools:context=".MainActivity"
     tools:deviceIds="wear_round">
 
 
     <TextView
         android:id="@+id/game_timer"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="35dp"
         android:textSize="20sp"
         android:textColor="@android:color/white"
-        android:gravity="center"
+        android:layout_centerHorizontal="true"
         tools:text="00m:00s:000m" />
+
+    <LinearLayout
+        android:id="@+id/life_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/game_timer"
+        android:layout_alignRight="@+id/game_timer"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        >
+        <include layout="@layout/new_life" />
+        <include layout="@layout/new_life" />
+        <include layout="@layout/new_life" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/player_block"
@@ -49,7 +64,7 @@
         android:gravity="center"
         android:text="Tap to Jump"
         android:visibility="gone"
-        tools:visibility="invisible"
+        tools:visibility="gone"
         />
 
     <TextView
@@ -61,7 +76,7 @@
         android:gravity="center"
         android:text="3"
         android:visibility="gone"
-        tools:visibility="visible"
+        tools:visibility="gone"
         />
 
 </RelativeLayout>
