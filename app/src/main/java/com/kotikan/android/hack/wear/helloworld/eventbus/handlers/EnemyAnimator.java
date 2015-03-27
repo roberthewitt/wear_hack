@@ -50,6 +50,10 @@ public class EnemyAnimator implements EventHandler {
 
     @Override
     public void handleEvent(Object o, Class<? extends Event> event) {
+        if (initialState == null) {
+            initialState = new BlockState(enemy);
+        }
+
         if (event == SpawnEnemy.class) {
             if (!isAnimating) {
                 Messages.bus().sendEvent(RequestNumberOfLives.class);
@@ -58,9 +62,7 @@ public class EnemyAnimator implements EventHandler {
             isAnimating = false;
             for (ViewPropertyAnimator p : animators) p.cancel();
         } else if (event == ResetGameState.class) {
-            if (initialState != null) {
-                initialState.setOnBlock(enemy, View.INVISIBLE);
-            }
+            initialState.setOnBlock(enemy, View.INVISIBLE);
         } else if (event == NumberOfLivesResponse.class) {
             final NumberOfLivesResponse livesResponse = (NumberOfLivesResponse) o;
 
@@ -68,7 +70,6 @@ public class EnemyAnimator implements EventHandler {
 
             enemy.setEnemyNumber(enemyCounter++);
             enemy.grantsLifeUp(spawnHeartBlock);
-            initialState = new BlockState(enemy);
             isAnimating = true;
             startX = enemy.x();
 

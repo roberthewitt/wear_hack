@@ -26,7 +26,7 @@ public class PlayerAnimator implements EventHandler {
     boolean alreadyAnimating = false;
     boolean canJump = false;
     private final Set<ViewPropertyAnimator> animators = new HashSet<>();
-    private BlockState initialState;
+    private BlockState initialState = null;
 
     public PlayerAnimator(ViewBlock playerBlock) {
         this.playerBlock = playerBlock;
@@ -34,10 +34,12 @@ public class PlayerAnimator implements EventHandler {
 
     @Override
     public void handleEvent(Object o, Class<? extends Event> event) {
+        if (initialState == null) {
+            initialState = new BlockState(playerBlock);
+        }
+
         if (event == ResetGameState.class) {
-            if (initialState != null) {
-                initialState.setOnBlock(playerBlock, View.VISIBLE);
-            }
+            initialState.setOnBlock(playerBlock, View.VISIBLE);
         } else if (event == SqaushPlayer.class) {
             if (!alreadyAnimating && canJump) {
                 ViewPropertyAnimator animate = playerBlock.animate();
@@ -55,7 +57,6 @@ public class PlayerAnimator implements EventHandler {
                 animate.setDuration(0);
                 animate.start();
 
-                initialState = new BlockState(playerBlock);
                 animators.clear();
                 alreadyAnimating = true;
 
