@@ -47,7 +47,6 @@ public class MainActivity extends Activity {
         eventBus.register(enemyGenerator, OnGameStart.class);
         eventBus.register(enemyGenerator, CollisionDetected.class);
 
-
         setContentView(R.layout.activity_main);
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
         stub.setOnClickListener(new ScreenClickSender());
@@ -77,6 +76,7 @@ public class MainActivity extends Activity {
                 eventBus.register(enemyListener, SpawnEnemy.class);
                 eventBus.register(enemyListener, CollisionDetected.class);
                 eventBus.register(enemyListener, ResetGameState.class);
+
 
                 countDownToStart = new CountdownToStart(textOutput);
                 eventBus.register(countDownToStart, ResetGameState.class);

@@ -11,12 +11,11 @@ import com.kotikan.android.hack.wear.helloworld.abstractions.ViewBlock;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.utils.BlockState;
+import com.kotikan.android.hack.wear.helloworld.utils.GameConstants;
 import com.kotikan.android.hack.wear.helloworld.utils.NumberGenerator;
-import com.kotikan.android.hack.wear.helloworld.utils.Timings;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -52,7 +51,7 @@ public class EnemyAnimator implements EventHandler {
                 ViewPropertyAnimator animate = enemy.animate();
                 animate.translationXBy(-startX);
                 animate.setInterpolator(new LinearInterpolator());
-                animate.setDuration(Timings.ENEMY_SLIDE_DURATION);
+                animate.setDuration(GameConstants.ENEMY_SLIDE_DURATION);
                 animate.withStartAction(new Runnable() {
                     @Override
                     public void run() {
@@ -81,7 +80,7 @@ public class EnemyAnimator implements EventHandler {
                         enemy.setBackgroundColor((Integer) animator.getAnimatedValue());
                     }
                 });
-                colorAnimation.setDuration(Timings.ENEMY_SLIDE_DURATION);
+                colorAnimation.setDuration(GameConstants.ENEMY_SLIDE_DURATION);
                 colorAnimation.start();
             }
         } else if (event == CollisionDetected.class) {

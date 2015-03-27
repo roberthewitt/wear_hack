@@ -12,14 +12,14 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.utils.BlockState;
-import com.kotikan.android.hack.wear.helloworld.utils.Timings;
+import com.kotikan.android.hack.wear.helloworld.utils.GameConstants;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class PlayerAnimator implements EventHandler {
 
-    final private int jumpDuration = Timings.PLAYER_JUMP_DURATION;
+    final private int jumpDuration = GameConstants.PLAYER_JUMP_DURATION;
     final private ViewBlock playerBlock;
     boolean alreadyAnimating = false;
     boolean canJump = true;
