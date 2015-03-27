@@ -50,12 +50,7 @@ public class PlayerAnimator implements EventHandler {
             }
         } else if (event == JumpPlayer.class) {
             if (!alreadyAnimating && canJump) {
-
-                ViewPropertyAnimator animate = playerBlock.animate();
-                animate.translationYBy(- (playerBlock.height() / 4));
-                animate.scaleY(1f);
-                animate.setDuration(0);
-                animate.start();
+                initialState.setOnBlock(playerBlock, View.VISIBLE);
 
                 animators.clear();
                 alreadyAnimating = true;

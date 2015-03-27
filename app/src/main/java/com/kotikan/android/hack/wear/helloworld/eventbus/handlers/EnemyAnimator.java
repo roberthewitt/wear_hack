@@ -75,8 +75,10 @@ public class EnemyAnimator implements EventHandler {
             isAnimating = true;
             startX = enemy.x();
 
-            int y = enemy.y();
-            enemy.setY(y - (enemy.height() * 3 / 4));
+            if (numberGenerator.generateBetween(1, 3) == 3) {
+                int y = enemy.y();
+                enemy.setY(y - (enemy.height() * 3 / 4));
+            }
 
             ViewPropertyAnimator animate = enemy.animate();
             animate.translationXBy(-startX);

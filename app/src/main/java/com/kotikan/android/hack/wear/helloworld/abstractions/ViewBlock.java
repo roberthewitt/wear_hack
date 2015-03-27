@@ -62,4 +62,9 @@ public class ViewBlock implements Block {
     public void setBackgroundColor(int colour) {
         view.setBackgroundColor(colour);
     }
+
+    @Override
+    public void setScaleY(float scale) {
+        view.setScaleY(scale);
+    }
 }

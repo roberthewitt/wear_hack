@@ -15,6 +15,7 @@ public class BlockState {
     public void setOnBlock(Block block, int visibility) {
         block.setX(x);
         block.setY(y);
+        block.setScaleY(1f);
         block.setRotation(rotation);
         block.setVisibility(visibility);
     }

@@ -16,4 +16,6 @@ public interface Block extends VisibilityModifier, Animator {
     void setRotation(int rotation);
 
     void setBackgroundColor(int colour);
+
+    void setScaleY(float scale);
 }
