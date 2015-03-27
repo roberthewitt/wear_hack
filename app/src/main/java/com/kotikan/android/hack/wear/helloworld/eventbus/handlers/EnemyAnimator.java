@@ -10,8 +10,11 @@ import android.view.animation.LinearInterpolator;
 import com.kotikan.android.hack.wear.helloworld.abstractions.EnemyBlock;
 import com.kotikan.android.hack.wear.helloworld.abstractions.ViewBlock;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
+import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameOver;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.NumberOfLivesResponse;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.RequestNumberOfLives;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.utils.BlockState;
@@ -48,44 +51,7 @@ public class EnemyAnimator implements EventHandler {
     public void handleEvent(Object o, Class<? extends Event> event) {
         if (event == SpawnEnemy.class) {
             if (!isAnimating) {
-                enemy.setEnemyNumber(enemyCounter++);
-                initialState = new BlockState(enemy);
-                isAnimating = true;
-                startX = enemy.x();
-                ViewPropertyAnimator animate = enemy.animate();
-                animate.translationXBy(-startX);
-                animate.setInterpolator(new LinearInterpolator());
-                animate.setDuration(GameConstants.ENEMY_SLIDE_DURATION);
-                animate.withStartAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        enemy.setVisibility(View.VISIBLE);
-                    }
-                });
-                animate.withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        isAnimating = false;
-                        enemy.setX(startX);
-                        enemy.setVisibility(View.GONE);
-                    }
-                });
-                animate.start();
-                animators.add(animate);
-
-                int startIndex = numberGenerator.generateBetween(0, 5);
-                int startColour = kotikanColours[startIndex];
-                int endColour = kotikanColours[numberGenerator.generateBetween(0, 5, startIndex)];
-
-                ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), startColour, endColour);
-                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animator) {
-                        enemy.setBackgroundColor((Integer) animator.getAnimatedValue());
-                    }
-                });
-                colorAnimation.setDuration(GameConstants.ENEMY_SLIDE_DURATION);
-                colorAnimation.start();
+                Messages.bus().sendEvent(RequestNumberOfLives.class);
             }
         } else if (event == GameOver.class) {
             isAnimating = false;
@@ -94,6 +60,57 @@ public class EnemyAnimator implements EventHandler {
             if (initialState != null) {
                 initialState.setOnBlock(enemy, View.INVISIBLE);
             }
+        } else if (event == NumberOfLivesResponse.class) {
+            final NumberOfLivesResponse livesResponse = (NumberOfLivesResponse) o;
+
+            boolean spawnHeartBlock = false;
+            if (livesResponse.lifeCount != GameConstants.STARTING_LIVES) {
+                if (numberGenerator.generateBetween(1, 5) == 1) {
+                    spawnHeartBlock = true;
+                }
+            }
+
+            enemy.setEnemyNumber(enemyCounter++);
+            enemy.grantsLifeUp(spawnHeartBlock);
+            initialState = new BlockState(enemy);
+            isAnimating = true;
+            startX = enemy.x();
+
+
+            ViewPropertyAnimator animate = enemy.animate();
+            animate.translationXBy(-startX);
+            animate.setInterpolator(new LinearInterpolator());
+            animate.setDuration(GameConstants.ENEMY_SLIDE_DURATION);
+            animate.withStartAction(new Runnable() {
+                @Override
+                public void run() {
+                    enemy.setVisibility(View.VISIBLE);
+                }
+            });
+            animate.withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    isAnimating = false;
+                    enemy.setX(startX);
+                    enemy.setVisibility(View.GONE);
+                }
+            });
+            animate.start();
+            animators.add(animate);
+
+            int startIndex = numberGenerator.generateBetween(0, 5);
+            int startColour = kotikanColours[startIndex];
+            int endColour = kotikanColours[numberGenerator.generateBetween(0, 5, startIndex)];
+
+            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), startColour, endColour);
+            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animator) {
+                    enemy.setBackgroundColor((Integer) animator.getAnimatedValue());
+                }
+            });
+            colorAnimation.setDuration(GameConstants.ENEMY_SLIDE_DURATION);
+            colorAnimation.start();
         }
     }
 }

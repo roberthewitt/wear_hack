@@ -6,4 +6,6 @@ public interface EnemyBlock extends Block {
     int getEnemyNumber();
 
     void setEnemyNumber(Integer number);
+
+    void grantsLifeUp(boolean lifeUp);
 }

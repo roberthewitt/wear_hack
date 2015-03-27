@@ -8,6 +8,8 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameOver;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.LifeChanged;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.NumberOfLivesResponse;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.RequestNumberOfLives;
 import com.kotikan.android.hack.wear.helloworld.utils.GameConstants;
 
 import java.util.HashSet;
@@ -40,6 +42,8 @@ public class LifeHandler implements EventHandler {
         } else if (GameStart.class == event) {
             lives = GameConstants.STARTING_LIVES;
             Messages.bus().sendEvent(new LifeChanged(lives), LifeChanged.class);
+        } else if (RequestNumberOfLives.class == event) {
+            Messages.bus().sendEvent(new NumberOfLivesResponse(lives), NumberOfLivesResponse.class);
         }
     }
 

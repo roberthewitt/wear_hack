@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.wearable.view.WatchViewStub;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kotikan.android.hack.wear.helloworld.abstractions.EnemyBlock;
@@ -20,7 +21,9 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetecte
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameOver;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.LifeChanged;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.NumberOfLivesResponse;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.RequestNumberOfLives;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.CollisionDetector;
@@ -59,6 +62,7 @@ public class MainActivity extends Activity {
         lifeHandler = new LifeHandler();
         eventBus.register(lifeHandler, CollisionDetected.class);
         eventBus.register(lifeHandler, GameStart.class);
+        eventBus.register(lifeHandler, RequestNumberOfLives.class);
 
         setContentView(R.layout.activity_main);
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
@@ -67,7 +71,7 @@ public class MainActivity extends Activity {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
                 final ViewBlock playerBlock = new ViewBlock(stub.findViewById(R.id.player_block));
-                final EnemyBlock enemy = new EnemyViewBlock(stub.findViewById(R.id.enemy_block));
+                final EnemyBlock enemy = new EnemyViewBlock((ImageView) stub.findViewById(R.id.enemy_block));
                 final ViewTextOutput timer = new ViewTextOutput((TextView) stub.findViewById(R.id.game_timer));
                 final TouchInput clickToRetry = new ViewTouchInput(stub.findViewById(R.id.game_over_click_to_retry));
                 final ViewTextOutput textOutput = new ViewTextOutput((TextView) stub.findViewById(R.id.countdown_to_start));
@@ -94,7 +98,7 @@ public class MainActivity extends Activity {
                 eventBus.register(enemyListener, SpawnEnemy.class);
                 eventBus.register(enemyListener, GameOver.class);
                 eventBus.register(enemyListener, ResetGameState.class);
-
+                eventBus.register(enemyListener, NumberOfLivesResponse.class);
 
                 countDownToStart = new CountdownToStart(textOutput);
                 eventBus.register(countDownToStart, ResetGameState.class);
