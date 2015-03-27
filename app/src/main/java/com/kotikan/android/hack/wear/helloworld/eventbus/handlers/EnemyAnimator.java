@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.LinearInterpolator;
 
+import com.kotikan.android.hack.wear.helloworld.abstractions.ViewBlock;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
@@ -32,12 +33,12 @@ public class EnemyAnimator implements EventHandler {
 
     final private Set<ViewPropertyAnimator> animators = new HashSet<>();
     private final NumberGenerator numberGenerator = new NumberGenerator();
-    private final View enemy;
+    private final ViewBlock enemy;
     private boolean isAnimating = false;
-    private float startX;
+    private int startX;
     private BlockState initialState;
 
-    public EnemyAnimator(View enemy) {
+    public EnemyAnimator(ViewBlock enemy) {
         this.enemy = enemy;
     }
 
@@ -47,7 +48,7 @@ public class EnemyAnimator implements EventHandler {
             if (!isAnimating) {
                 initialState = new BlockState(enemy);
                 isAnimating = true;
-                startX = enemy.getX();
+                startX = enemy.x();
                 ViewPropertyAnimator animate = enemy.animate();
                 animate.translationXBy(-startX);
                 animate.setInterpolator(new LinearInterpolator());

@@ -1,18 +1,18 @@
 package com.kotikan.android.hack.wear.helloworld.utils;
 
-import android.view.View;
+import com.kotikan.android.hack.wear.helloworld.abstractions.ViewBlock;
 
 public class BlockState {
 
     public final int x, y, rotation;
 
-    public BlockState(View block) {
-        x = (int) block.getX();
-        y = (int) block.getY();
+    public BlockState(ViewBlock block) {
+        x = block.x();
+        y = block.y();
         rotation = 0;
     }
 
-    public void setOnBlock(View block, int visibility) {
+    public void setOnBlock(ViewBlock block, int visibility) {
         block.setX(x);
         block.setY(y);
         block.setRotation(rotation);

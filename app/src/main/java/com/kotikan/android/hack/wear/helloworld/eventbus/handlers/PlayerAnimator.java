@@ -5,6 +5,7 @@ import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
+import com.kotikan.android.hack.wear.helloworld.abstractions.ViewBlock;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
@@ -19,13 +20,13 @@ import java.util.Set;
 public class PlayerAnimator implements EventHandler {
 
     final private int jumpDuration = Timings.PLAYER_JUMP_DURATION;
-    final private View playerBlock;
+    final private ViewBlock playerBlock;
     boolean alreadyAnimating = false;
     boolean canJump = true;
     private final Set<ViewPropertyAnimator> animators = new HashSet<>();
     private BlockState initialState;
 
-    public PlayerAnimator(View playerBlock) {
+    public PlayerAnimator(ViewBlock playerBlock) {
         this.playerBlock = playerBlock;
     }
 
@@ -41,7 +42,7 @@ public class PlayerAnimator implements EventHandler {
                 animators.clear();
                 alreadyAnimating = true;
 
-                final float playerHeight = playerBlock.getHeight();
+                final float playerHeight = playerBlock.height();
                 final int jumpBy = (int) (playerHeight * 2.5f);
                 animators.add(rotateAnimation());
                 animators.add(getJumpAnimator(jumpBy));

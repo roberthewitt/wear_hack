@@ -3,6 +3,7 @@ package com.kotikan.android.hack.wear.helloworld.eventbus.handlers;
 import android.os.Handler;
 import android.widget.TextView;
 
+import com.kotikan.android.hack.wear.helloworld.abstractions.ViewTextOutput;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
@@ -16,7 +17,7 @@ public class GameTimer implements EventHandler {
     static private final String DEFAULT_START_STATE = "00m:00s:000m";
 
     private final Handler handler = new Handler();
-    private final TextView timer;
+    private final ViewTextOutput timer;
     private NumberFormatter formatter;
     private boolean isRunning = false;
     private boolean shouldUpdate = true;
@@ -31,7 +32,7 @@ public class GameTimer implements EventHandler {
         }
     };
 
-    public GameTimer(TextView timer) {
+    public GameTimer(ViewTextOutput timer) {
         this.timer = timer;
     }
 

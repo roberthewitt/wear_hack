@@ -1,5 +1,7 @@
 package com.kotikan.android.hack.wear.helloworld.utils;
 
+import com.kotikan.android.hack.wear.helloworld.abstractions.Block;
+
 public class CollisionMonitor {
 
     private CollisionMonitor(){}

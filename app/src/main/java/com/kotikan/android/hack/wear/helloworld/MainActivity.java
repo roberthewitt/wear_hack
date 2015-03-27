@@ -4,22 +4,26 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.wearable.view.WatchViewStub;
-import android.view.View;
 import android.widget.TextView;
 
-import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
+import com.kotikan.android.hack.wear.helloworld.abstractions.TouchInput;
+import com.kotikan.android.hack.wear.helloworld.abstractions.ViewBlock;
+import com.kotikan.android.hack.wear.helloworld.abstractions.ViewTextOutput;
+import com.kotikan.android.hack.wear.helloworld.abstractions.ViewTouchInput;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventBus;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
+import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
+import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.CollisionDetector;
+import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.CountdownToStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.EnemyAnimator;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.GameTimer;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.PlayerAnimator;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.VibrateOnCollision;
-import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.CollisionDetector;
 
 public class MainActivity extends Activity {
 
@@ -30,6 +34,7 @@ public class MainActivity extends Activity {
     private EventHandler collisionDetector;
     private EventHandler enemyGenerator;
     private EventHandler vibrateOnCollision;
+    private EventHandler countDownToStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +54,11 @@ public class MainActivity extends Activity {
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
-                final View playerBlock = stub.findViewById(R.id.player_block);
-                final View enemy = stub.findViewById(R.id.enemy_block);
-                final TextView timer = (TextView) stub.findViewById(R.id.game_timer);
-                final TextView clickToRetry = (TextView) stub.findViewById(R.id.game_over_click_to_retry);
+                final ViewBlock playerBlock = new ViewBlock(stub.findViewById(R.id.player_block));
+                final ViewBlock enemy = new ViewBlock(stub.findViewById(R.id.enemy_block));
+                final ViewTextOutput timer = new ViewTextOutput((TextView) stub.findViewById(R.id.game_timer));
+                final TouchInput clickToRetry = new ViewTouchInput(stub.findViewById(R.id.game_over_click_to_retry));
+                final ViewTextOutput textOutput = new ViewTextOutput((TextView) stub.findViewById(R.id.countdown_to_start));
 
                 gameTimer = new GameTimer(timer);
                 eventBus.register(gameTimer, OnGameStart.class);
@@ -71,6 +77,9 @@ public class MainActivity extends Activity {
                 eventBus.register(enemyListener, SpawnEnemy.class);
                 eventBus.register(enemyListener, CollisionDetected.class);
                 eventBus.register(enemyListener, ResetGameState.class);
+
+                countDownToStart = new CountdownToStart(textOutput);
+                eventBus.register(countDownToStart, ResetGameState.class);
 
                 collisionDetector = new CollisionDetector(playerBlock, enemy);
                 eventBus.register(collisionDetector, OnGameStart.class);

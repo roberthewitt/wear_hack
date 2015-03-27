@@ -49,6 +49,18 @@
         android:gravity="center"
         android:text="Tap to Jump"
         android:visibility="gone"
+        tools:visibility="invisible"
+        />
+
+    <TextView
+        android:id="@+id/countdown_to_start"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="#ff20c820"
+        android:textSize="70sp"
+        android:gravity="center"
+        android:text="3"
+        android:visibility="gone"
         tools:visibility="visible"
         />
 

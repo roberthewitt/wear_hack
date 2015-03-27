@@ -3,12 +3,13 @@ package com.kotikan.android.hack.wear.helloworld.eventbus.handlers;
 import android.os.Handler;
 import android.view.View;
 
+import com.kotikan.android.hack.wear.helloworld.abstractions.ViewBlock;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
-import com.kotikan.android.hack.wear.helloworld.utils.Block;
+import com.kotikan.android.hack.wear.helloworld.abstractions.Block;
 import com.kotikan.android.hack.wear.helloworld.utils.CollisionMonitor;
 
 public class CollisionDetector implements EventHandler {
@@ -30,9 +31,9 @@ public class CollisionDetector implements EventHandler {
         }
     };
 
-    public CollisionDetector(View playerBlock, View enemy) {
-        this.playerBlock = new ViewBlock(playerBlock);
-        this.enemy = new ViewBlock(enemy);
+    public CollisionDetector(ViewBlock playerBlock, ViewBlock enemy) {
+        this.playerBlock = playerBlock;
+        this.enemy = enemy;
         handler = new Handler();
     }
 
