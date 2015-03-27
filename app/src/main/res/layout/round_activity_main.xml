@@ -7,7 +7,6 @@
     tools:context=".MainActivity"
     tools:deviceIds="wear_round">
 
-
     <TextView
         android:id="@+id/game_timer"
         android:layout_width="wrap_content"
@@ -26,23 +25,22 @@
         android:layout_below="@+id/game_timer"
         android:layout_alignRight="@+id/game_timer"
         android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@mipmap/ic_heart_full"
-            />
+            android:src="@mipmap/ic_heart_full" />
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@mipmap/ic_heart_full"
-            />
+            android:src="@mipmap/ic_heart_full" />
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@mipmap/ic_heart_full"
-            />
+            android:src="@mipmap/ic_heart_full" />
     </LinearLayout>
 
     <ImageView
@@ -53,8 +51,7 @@
         android:src="@mipmap/player_icon"
         android:scaleType="centerCrop"
         android:layout_marginLeft="50dp"
-        android:layout_marginBottom="50dp"
-        />
+        android:layout_marginBottom="50dp" />
 
     <ImageView
         android:id="@+id/enemy_block"
@@ -67,8 +64,7 @@
         android:padding="5dp"
         tools:src="@mipmap/ic_heart_full"
         tools:visibility="visible"
-        tools:background="#fffcf2ff"
-        />
+        tools:background="#fffcf2ff" />
 
     <TextView
         android:id="@+id/game_over_click_to_retry"
@@ -80,8 +76,7 @@
         android:gravity="center"
         android:text="Tap to Jump"
         android:visibility="gone"
-        tools:visibility="gone"
-        />
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/countdown_to_start"
@@ -92,7 +87,6 @@
         android:gravity="center"
         android:text="3"
         android:visibility="gone"
-        tools:visibility="gone"
-        />
+        tools:visibility="gone" />
 
 </RelativeLayout>

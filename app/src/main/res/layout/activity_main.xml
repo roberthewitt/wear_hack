@@ -1,12 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.wearable.view.WatchViewStub
-    android:id="@+id/watch_view_stub"
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:rectLayout="@layout/rect_activity_main"
-    app:roundLayout="@layout/round_activity_main"
-    tools:context=".MainActivity"
-    tools:deviceIds="wear" />
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <HorizontalScrollView
+        android:id="@+id/scroller"
+        android:focusableInTouchMode="false"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/fopo"
+            android:scaleType="center" />
+
+    </HorizontalScrollView>
+
+    <android.support.wearable.view.WatchViewStub
+        android:id="@+id/watch_view_stub"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:rectLayout="@layout/rect_activity_main"
+        app:roundLayout="@layout/round_activity_main"
+        tools:context=".MainActivity"
+        tools:deviceIds="wear" />
+</FrameLayout>

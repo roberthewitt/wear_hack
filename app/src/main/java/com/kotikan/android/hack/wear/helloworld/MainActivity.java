@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.wearable.view.WatchViewStub;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.LifeDisplayer;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.LifeHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.PlayerAnimator;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.VibrateOnCollision;
+import com.kotikan.android.hack.wear.helloworld.utils.InfiniteScroller;
 
 public class MainActivity extends Activity {
 
@@ -66,6 +68,12 @@ public class MainActivity extends Activity {
         eventBus.register(lifeHandler, RequestNumberOfLives.class);
 
         setContentView(R.layout.activity_main);
+        HorizontalScrollView viewById = (HorizontalScrollView) findViewById(R.id.scroller);
+        InfiniteScroller infiniteScroller = new InfiniteScroller(viewById);
+        eventBus.register(infiniteScroller, GameOver.class);
+        eventBus.register(infiniteScroller, GameStart.class);
+
+
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
         stub.setOnTouchListener(new ScreenClickSender());
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
