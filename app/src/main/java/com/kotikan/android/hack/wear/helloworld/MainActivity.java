@@ -71,6 +71,7 @@ public class MainActivity extends Activity {
                 eventBus.register(playerListener, OnScreenClicked.class);
                 eventBus.register(playerListener, CollisionDetected.class);
                 eventBus.register(playerListener, ResetGameState.class);
+                eventBus.register(playerListener, OnGameStart.class);
 
                 enemyListener = new EnemyAnimator(enemy);
                 eventBus.register(enemyListener, SpawnEnemy.class);

@@ -9,6 +9,7 @@ import com.kotikan.android.hack.wear.helloworld.abstractions.ViewBlock;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.utils.BlockState;
@@ -51,6 +52,8 @@ public class PlayerAnimator implements EventHandler {
             canJump = false;
             alreadyAnimating = false;
             for (ViewPropertyAnimator v : animators) v.cancel();
+        } else if (event == OnGameStart.class) {
+            canJump = true;
         }
     }
 
