@@ -8,7 +8,6 @@ import android.view.ViewPropertyAnimator;
 import android.view.animation.LinearInterpolator;
 
 import com.kotikan.android.hack.wear.helloworld.abstractions.EnemyBlock;
-import com.kotikan.android.hack.wear.helloworld.abstractions.ViewBlock;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
@@ -18,6 +17,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.events.RequestNumberOfL
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.utils.BlockState;
+import com.kotikan.android.hack.wear.helloworld.utils.EnemyHeartLogic;
 import com.kotikan.android.hack.wear.helloworld.utils.GameConstants;
 import com.kotikan.android.hack.wear.helloworld.utils.NumberGenerator;
 
@@ -38,6 +38,7 @@ public class EnemyAnimator implements EventHandler {
 
     final private Set<ViewPropertyAnimator> animators = new HashSet<>();
     private final NumberGenerator numberGenerator = new NumberGenerator();
+    private final EnemyHeartLogic heartLogic = new EnemyHeartLogic();
     private final EnemyBlock enemy;
     private boolean isAnimating = false;
     private int startX;
@@ -63,12 +64,7 @@ public class EnemyAnimator implements EventHandler {
         } else if (event == NumberOfLivesResponse.class) {
             final NumberOfLivesResponse livesResponse = (NumberOfLivesResponse) o;
 
-            boolean spawnHeartBlock = false;
-            if (livesResponse.lifeCount != GameConstants.STARTING_LIVES) {
-                if (numberGenerator.generateBetween(1, 5) == 1) {
-                    spawnHeartBlock = true;
-                }
-            }
+            boolean spawnHeartBlock = heartLogic.shouldSpawnHeart(numberGenerator, livesResponse.lifeCount);
 
             enemy.setEnemyNumber(enemyCounter++);
             enemy.grantsLifeUp(spawnHeartBlock);
