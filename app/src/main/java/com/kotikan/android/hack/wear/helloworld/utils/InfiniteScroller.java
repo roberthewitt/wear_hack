@@ -17,7 +17,6 @@ public class InfiniteScroller implements EventHandler {
     public InfiniteScroller(final HorizontalScrollView scrollView) {
         this.scrollView = scrollView;
         this.handler = new Handler();
-        scrollMeABit(scrollView);
     }
 
     private void scrollMeABit(final HorizontalScrollView viewById) {
