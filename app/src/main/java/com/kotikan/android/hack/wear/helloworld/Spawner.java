@@ -13,8 +13,8 @@ import com.kotikan.android.hack.wear.helloworld.utils.GameConstants;
 public class Spawner implements EventHandler {
     private final Handler handler;
     private boolean isAnimating = false;
-    private boolean shouldSpawn = true;
     private int enemyCounter = 0;
+    private int nextExpectedEnemy = 1;
 
     public Spawner(Handler handler) {
         this.handler = handler;
@@ -24,12 +24,10 @@ public class Spawner implements EventHandler {
     public void handleEvent(Object o, Class<? extends Event> event) {
         if (event == GameStart.class) {
             if (!isAnimating) {
-                shouldSpawn = true;
                 isAnimating = true;
                 generateWithDelay(GameConstants.ENEMY_SPAWN_MINIMUM_DELAY);
             }
         } else if (event == GameOver.class) {
-            shouldSpawn = false;
             isAnimating = false;
         }
     }
@@ -44,7 +42,7 @@ public class Spawner implements EventHandler {
         return new Runnable() {
             @Override
             public void run() {
-                if (shouldSpawn && enemyCounter == spawnEnemyNumber) {
+                if (spawnEnemyNumber == nextExpectedEnemy  && enemyCounter == spawnEnemyNumber) {
                     Messages.bus().sendEvent(SpawnEnemy.class);
                     generateWithDelay(GameConstants.ENEMY_SPAWN_MINIMUM_DELAY);
                 }
