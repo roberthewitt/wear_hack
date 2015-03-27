@@ -75,7 +75,6 @@ public class MainActivity extends Activity {
 
                 lifeDisplayer = new LifeDisplayer(lifeCounter);
                 eventBus.register(lifeDisplayer, LifeChanged.class);
-                eventBus.register(lifeDisplayer, GameStart.class);
 
                 gameTimer = new GameTimer(timer);
                 eventBus.register(gameTimer, GameStart.class);

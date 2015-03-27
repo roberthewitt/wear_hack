@@ -17,7 +17,7 @@
         android:textSize="20sp"
         android:textColor="@android:color/white"
         android:layout_centerHorizontal="true"
-        tools:text="00m:00s:000m" />
+        android:text="00m:00s:000m" />
 
     <LinearLayout
         android:id="@+id/life_container"

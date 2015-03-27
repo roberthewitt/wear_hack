@@ -39,6 +39,7 @@ public class LifeHandler implements EventHandler {
             }
         } else if (GameStart.class == event) {
             lives = GameConstants.STARTING_LIVES;
+            Messages.bus().sendEvent(new LifeChanged(lives), LifeChanged.class);
         }
     }
 
