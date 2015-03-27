@@ -23,7 +23,7 @@ public class PlayerAnimator implements EventHandler {
     final private int jumpDuration = GameConstants.PLAYER_JUMP_DURATION;
     final private ViewBlock playerBlock;
     boolean alreadyAnimating = false;
-    boolean canJump = true;
+    boolean canJump = false;
     private final Set<ViewPropertyAnimator> animators = new HashSet<>();
     private BlockState initialState;
 

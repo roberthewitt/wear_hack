@@ -90,7 +90,7 @@ public class MainActivity extends Activity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                eventBus.sendEvent(OnGameStart.class);
+                eventBus.sendEvent(ResetGameState.class);
             }
         }, 1000);
     }
