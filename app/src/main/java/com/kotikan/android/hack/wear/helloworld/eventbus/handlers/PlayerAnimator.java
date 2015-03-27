@@ -32,7 +32,6 @@ public class PlayerAnimator implements EventHandler {
     @Override
     public void handleEvent(Object o, Class<? extends Event> event) {
         if (event == ResetGameState.class) {
-            canJump = true;
             if (initialState != null) {
                 initialState.setOnBlock(playerBlock, View.VISIBLE);
             }
