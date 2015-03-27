@@ -20,12 +20,13 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameOver;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameStart;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.JumpPlayer;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.LifeChanged;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.NumberOfLivesResponse;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.RequestNumberOfLives;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.SqaushPlayer;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.CollisionDetector;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.CountdownToStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.EnemyAnimator;
@@ -89,7 +90,8 @@ public class MainActivity extends Activity {
                 eventBus.register(endScreen, GameOver.class);
 
                 playerListener = new PlayerAnimator(playerBlock);
-                eventBus.register(playerListener, OnScreenClicked.class);
+                eventBus.register(playerListener, JumpPlayer.class);
+                eventBus.register(playerListener, SqaushPlayer.class);
                 eventBus.register(playerListener, GameOver.class);
                 eventBus.register(playerListener, ResetGameState.class);
                 eventBus.register(playerListener, GameStart.class);

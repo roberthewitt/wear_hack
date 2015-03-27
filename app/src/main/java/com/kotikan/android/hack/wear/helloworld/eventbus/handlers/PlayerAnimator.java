@@ -10,8 +10,9 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameOver;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameStart;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.JumpPlayer;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.SqaushPlayer;
 import com.kotikan.android.hack.wear.helloworld.utils.BlockState;
 import com.kotikan.android.hack.wear.helloworld.utils.GameConstants;
 
@@ -37,8 +38,23 @@ public class PlayerAnimator implements EventHandler {
             if (initialState != null) {
                 initialState.setOnBlock(playerBlock, View.VISIBLE);
             }
-        } else if (event == OnScreenClicked.class) {
+        } else if (event == SqaushPlayer.class) {
             if (!alreadyAnimating && canJump) {
+                ViewPropertyAnimator animate = playerBlock.animate();
+                animate.translationYBy(playerBlock.height() / 4);
+                animate.scaleY(0.5f);
+                animate.setDuration(0);
+                animate.start();
+            }
+        } else if (event == JumpPlayer.class) {
+            if (!alreadyAnimating && canJump) {
+
+                ViewPropertyAnimator animate = playerBlock.animate();
+                animate.translationYBy(- (playerBlock.height() / 4));
+                animate.scaleY(1f);
+                animate.setDuration(0);
+                animate.start();
+
                 initialState = new BlockState(playerBlock);
                 animators.clear();
                 alreadyAnimating = true;
