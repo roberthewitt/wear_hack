@@ -9,8 +9,8 @@ import android.view.animation.LinearInterpolator;
 
 import com.kotikan.android.hack.wear.helloworld.abstractions.ViewBlock;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameOver;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.utils.BlockState;
@@ -83,7 +83,7 @@ public class EnemyAnimator implements EventHandler {
                 colorAnimation.setDuration(GameConstants.ENEMY_SLIDE_DURATION);
                 colorAnimation.start();
             }
-        } else if (event == CollisionDetected.class) {
+        } else if (event == GameOver.class) {
             isAnimating = false;
             for (ViewPropertyAnimator p : animators) p.cancel();
         } else if (event == ResetGameState.class) {

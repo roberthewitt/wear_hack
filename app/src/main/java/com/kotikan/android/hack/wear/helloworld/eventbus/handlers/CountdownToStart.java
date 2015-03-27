@@ -8,7 +8,7 @@ import com.kotikan.android.hack.wear.helloworld.abstractions.TextOutput;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.utils.GameConstants;
 
@@ -72,7 +72,7 @@ public class CountdownToStart implements EventHandler {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                Messages.bus().sendEvent(OnGameStart.class);
+                Messages.bus().sendEvent(GameStart.class);
                 textOutput.setVisibility(View.GONE);
             }
 

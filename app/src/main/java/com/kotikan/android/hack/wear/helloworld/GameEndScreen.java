@@ -5,8 +5,8 @@ import android.view.View;
 import com.kotikan.android.hack.wear.helloworld.abstractions.TouchInput;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameOver;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 
 public class GameEndScreen implements EventHandler {
@@ -26,7 +26,7 @@ public class GameEndScreen implements EventHandler {
 
     @Override
     public void handleEvent(Object o, Class<? extends Event> event) {
-        if (event == CollisionDetected.class) {
+        if (event == GameOver.class) {
             touchInput.setVisibility(View.VISIBLE);
         }
     }

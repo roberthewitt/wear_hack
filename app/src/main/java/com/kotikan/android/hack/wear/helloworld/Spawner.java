@@ -2,12 +2,12 @@ package com.kotikan.android.hack.wear.helloworld;
 
 import android.os.Handler;
 
-import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
+import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameOver;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameStart;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
 import com.kotikan.android.hack.wear.helloworld.utils.GameConstants;
 
 public class Spawner implements EventHandler {
@@ -22,13 +22,13 @@ public class Spawner implements EventHandler {
 
     @Override
     public void handleEvent(Object o, Class<? extends Event> event) {
-        if (event == OnGameStart.class) {
+        if (event == GameStart.class) {
             if (!isAnimating) {
                 shouldSpawn = true;
                 isAnimating = true;
                 generateWithDelay(GameConstants.ENEMY_SPAWN_MINIMUM_DELAY);
             }
-        } else if (event == CollisionDetected.class) {
+        } else if (event == GameOver.class) {
             shouldSpawn = false;
             isAnimating = false;
         }

@@ -14,7 +14,8 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.EventBus;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.Messages;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.CollisionDetected;
-import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnGameStart;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameOver;
+import com.kotikan.android.hack.wear.helloworld.eventbus.events.GameStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.OnScreenClicked;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.ResetGameState;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.SpawnEnemy;
@@ -44,8 +45,8 @@ public class MainActivity extends Activity {
         vibrateOnCollision = new VibrateOnCollision(this);
         eventBus.register(vibrateOnCollision, CollisionDetected.class);
         enemyGenerator = new Spawner(handler);
-        eventBus.register(enemyGenerator, OnGameStart.class);
-        eventBus.register(enemyGenerator, CollisionDetected.class);
+        eventBus.register(enemyGenerator, GameStart.class);
+        eventBus.register(enemyGenerator, GameOver.class);
 
         setContentView(R.layout.activity_main);
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
@@ -60,22 +61,22 @@ public class MainActivity extends Activity {
                 final ViewTextOutput textOutput = new ViewTextOutput((TextView) stub.findViewById(R.id.countdown_to_start));
 
                 gameTimer = new GameTimer(timer);
-                eventBus.register(gameTimer, OnGameStart.class);
-                eventBus.register(gameTimer, CollisionDetected.class);
+                eventBus.register(gameTimer, GameStart.class);
+                eventBus.register(gameTimer, GameOver.class);
                 eventBus.register(gameTimer, ResetGameState.class);
 
                 endScreen = new GameEndScreen(clickToRetry);
-                eventBus.register(endScreen, CollisionDetected.class);
+                eventBus.register(endScreen, GameOver.class);
 
                 playerListener = new PlayerAnimator(playerBlock);
                 eventBus.register(playerListener, OnScreenClicked.class);
-                eventBus.register(playerListener, CollisionDetected.class);
+                eventBus.register(playerListener, GameOver.class);
                 eventBus.register(playerListener, ResetGameState.class);
-                eventBus.register(playerListener, OnGameStart.class);
+                eventBus.register(playerListener, GameStart.class);
 
                 enemyListener = new EnemyAnimator(enemy);
                 eventBus.register(enemyListener, SpawnEnemy.class);
-                eventBus.register(enemyListener, CollisionDetected.class);
+                eventBus.register(enemyListener, GameOver.class);
                 eventBus.register(enemyListener, ResetGameState.class);
 
 
@@ -83,7 +84,7 @@ public class MainActivity extends Activity {
                 eventBus.register(countDownToStart, ResetGameState.class);
 
                 collisionDetector = new CollisionDetector(playerBlock, enemy);
-                eventBus.register(collisionDetector, OnGameStart.class);
+                eventBus.register(collisionDetector, GameStart.class);
             }
         });
 
