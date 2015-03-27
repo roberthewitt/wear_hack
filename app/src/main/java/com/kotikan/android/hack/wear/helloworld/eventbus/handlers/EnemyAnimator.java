@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.LinearInterpolator;
 
+import com.kotikan.android.hack.wear.helloworld.abstractions.EnemyBlock;
 import com.kotikan.android.hack.wear.helloworld.abstractions.ViewBlock;
 import com.kotikan.android.hack.wear.helloworld.eventbus.EventHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.events.Event;
@@ -22,6 +23,8 @@ import java.util.Set;
 
 public class EnemyAnimator implements EventHandler {
 
+    private static Integer enemyCounter = 0;
+
     private final int kRed = Color.argb(255, 220, 4, 81);
     private final int kPurple = Color.argb(255, 128, 55, 155);
     private final int kBlue = Color.argb(255, 0, 169, 224);
@@ -32,12 +35,12 @@ public class EnemyAnimator implements EventHandler {
 
     final private Set<ViewPropertyAnimator> animators = new HashSet<>();
     private final NumberGenerator numberGenerator = new NumberGenerator();
-    private final ViewBlock enemy;
+    private final EnemyBlock enemy;
     private boolean isAnimating = false;
     private int startX;
     private BlockState initialState;
 
-    public EnemyAnimator(ViewBlock enemy) {
+    public EnemyAnimator(EnemyBlock enemy) {
         this.enemy = enemy;
     }
 
@@ -45,6 +48,7 @@ public class EnemyAnimator implements EventHandler {
     public void handleEvent(Object o, Class<? extends Event> event) {
         if (event == SpawnEnemy.class) {
             if (!isAnimating) {
+                enemy.setEnemyNumber(enemyCounter++);
                 initialState = new BlockState(enemy);
                 isAnimating = true;
                 startX = enemy.x();

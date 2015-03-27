@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.TextView;
 
+import com.kotikan.android.hack.wear.helloworld.abstractions.EnemyBlock;
+import com.kotikan.android.hack.wear.helloworld.abstractions.EnemyViewBlock;
 import com.kotikan.android.hack.wear.helloworld.abstractions.TouchInput;
 import com.kotikan.android.hack.wear.helloworld.abstractions.ViewBlock;
 import com.kotikan.android.hack.wear.helloworld.abstractions.ViewTextOutput;
@@ -23,6 +25,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.CollisionDetec
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.CountdownToStart;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.EnemyAnimator;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.GameTimer;
+import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.LifeHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.PlayerAnimator;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.VibrateOnCollision;
 
@@ -36,6 +39,7 @@ public class MainActivity extends Activity {
     private EventHandler enemyGenerator;
     private EventHandler vibrateOnCollision;
     private EventHandler countDownToStart;
+    private EventHandler lifeHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,10 @@ public class MainActivity extends Activity {
         eventBus.register(enemyGenerator, GameStart.class);
         eventBus.register(enemyGenerator, GameOver.class);
 
+        lifeHandler = new LifeHandler();
+        eventBus.register(lifeHandler, CollisionDetected.class);
+        eventBus.register(lifeHandler, GameStart.class);
+
         setContentView(R.layout.activity_main);
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
         stub.setOnClickListener(new ScreenClickSender());
@@ -55,7 +63,7 @@ public class MainActivity extends Activity {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
                 final ViewBlock playerBlock = new ViewBlock(stub.findViewById(R.id.player_block));
-                final ViewBlock enemy = new ViewBlock(stub.findViewById(R.id.enemy_block));
+                final EnemyBlock enemy = new EnemyViewBlock(stub.findViewById(R.id.enemy_block));
                 final ViewTextOutput timer = new ViewTextOutput((TextView) stub.findViewById(R.id.game_timer));
                 final TouchInput clickToRetry = new ViewTouchInput(stub.findViewById(R.id.game_over_click_to_retry));
                 final ViewTextOutput textOutput = new ViewTextOutput((TextView) stub.findViewById(R.id.countdown_to_start));
@@ -85,6 +93,7 @@ public class MainActivity extends Activity {
 
                 collisionDetector = new CollisionDetector(playerBlock, enemy);
                 eventBus.register(collisionDetector, GameStart.class);
+                eventBus.register(collisionDetector, GameOver.class);
             }
         });
 
