@@ -23,18 +23,21 @@ public class PlayerAnimator implements EventHandler {
     final private int jumpDuration = GameConstants.PLAYER_JUMP_DURATION;
     private final Set<ViewPropertyAnimator> animators = new HashSet<>();
     private final ViewBlock playerBlock;
-    private final BlockState initialState;
 
+    private BlockState initialState;
     boolean alreadyAnimating = false;
     boolean canJump = false;
 
     public PlayerAnimator(ViewBlock playerBlock) {
         this.playerBlock = playerBlock;
-        this.initialState = new BlockState(playerBlock);
     }
 
     @Override
     public void handleEvent(Object o, Class<? extends Event> event) {
+        if (initialState == null) {
+            initialState = new BlockState(playerBlock);
+        }
+
         if (event == ResetGameState.class) {
             initialState.setOnBlock(playerBlock, View.VISIBLE);
         } else if (event == OnScreenClicked.class) {

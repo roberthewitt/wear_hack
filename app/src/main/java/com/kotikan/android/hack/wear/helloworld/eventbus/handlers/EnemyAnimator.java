@@ -39,18 +39,21 @@ public class EnemyAnimator implements EventHandler {
     private final Set<ViewPropertyAnimator> animators = new HashSet<>();
     private final NumberGenerator numberGenerator = new NumberGenerator();
     private final EnemyHeartLogic heartLogic = new EnemyHeartLogic();
-    private final BlockState initialState;
     private final EnemyBlock enemy;
 
+    private BlockState initialState;
     private boolean isAnimating = false;
 
     public EnemyAnimator(EnemyBlock enemy) {
         this.enemy = enemy;
-        this.initialState = new BlockState(enemy);
     }
 
     @Override
     public void handleEvent(Object o, Class<? extends Event> event) {
+        if (initialState == null) {
+            initialState = new BlockState(enemy);
+        }
+
         if (event == SpawnEnemy.class) {
             if (!isAnimating) {
                 Messages.bus().sendEvent(RequestNumberOfLives.class);
