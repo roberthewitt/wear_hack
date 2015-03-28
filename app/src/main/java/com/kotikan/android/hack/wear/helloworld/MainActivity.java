@@ -34,6 +34,7 @@ import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.LifeDisplayer;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.LifeHandler;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.PlayerAnimator;
 import com.kotikan.android.hack.wear.helloworld.eventbus.handlers.VibrateOnCollision;
+import com.kotikan.android.hack.wear.helloworld.utils.GameConstants;
 
 public class MainActivity extends Activity {
 
@@ -79,6 +80,7 @@ public class MainActivity extends Activity {
 
                 lifeDisplayer = new LifeDisplayer(lifeCounter);
                 eventBus.register(lifeDisplayer, LifeChanged.class);
+                eventBus.sendEvent(new LifeChanged(GameConstants.LIVES_STARTING_QUANTITY), LifeChanged.class);
 
                 gameTimer = new GameTimer(timer);
                 eventBus.register(gameTimer, GameStart.class);
