@@ -36,16 +36,17 @@ public class EnemyAnimator implements EventHandler {
     private final int kOrange = Color.argb(255, 224, 82, 6);
     private final int[] kotikanColours = new int[]{kRed, kPurple, kBlue, kGreen, kYellow, kOrange};
 
-    final private Set<ViewPropertyAnimator> animators = new HashSet<>();
+    private final Set<ViewPropertyAnimator> animators = new HashSet<>();
     private final NumberGenerator numberGenerator = new NumberGenerator();
     private final EnemyHeartLogic heartLogic = new EnemyHeartLogic();
+    private final BlockState initialState;
     private final EnemyBlock enemy;
+
     private boolean isAnimating = false;
-    private int startX;
-    private BlockState initialState;
 
     public EnemyAnimator(EnemyBlock enemy) {
         this.enemy = enemy;
+        this.initialState = new BlockState(enemy);
     }
 
     @Override
@@ -54,63 +55,38 @@ public class EnemyAnimator implements EventHandler {
             if (!isAnimating) {
                 Messages.bus().sendEvent(RequestNumberOfLives.class);
             }
+
         } else if (event == GameOver.class) {
             isAnimating = false;
             for (ViewPropertyAnimator p : animators) p.cancel();
+
         } else if (event == ResetGameState.class) {
-            if (initialState != null) {
-                initialState.setOnBlock(enemy, View.INVISIBLE);
-            }
+            initialState.setOnBlock(enemy, View.INVISIBLE);
+
         } else if (event == NumberOfLivesResponse.class) {
+            isAnimating = true;
             final NumberOfLivesResponse livesResponse = (NumberOfLivesResponse) o;
 
             boolean spawnHeartBlock = heartLogic.shouldSpawnHeart(numberGenerator, livesResponse.lifeCount);
-
             enemy.setEnemyNumber(enemyCounter++);
             enemy.grantsLifeUp(spawnHeartBlock);
-            initialState = new BlockState(enemy);
-            isAnimating = true;
-            startX = enemy.x();
-
+            initialState.setOnBlock(enemy, View.VISIBLE);
 
             ViewPropertyAnimator animate = enemy.animate();
-            animate.translationXBy(-startX);
+            animate.translationXBy(-initialState.x);
             animate.setInterpolator(new LinearInterpolator());
             animate.setDuration(GameConstants.ENEMY_SLIDE_DURATION);
-            animate.withStartAction(new Runnable() {
-                @Override
-                public void run() {
-                    enemy.setVisibility(View.VISIBLE);
-                }
-            });
             animate.withEndAction(new Runnable() {
                 @Override
                 public void run() {
                     isAnimating = false;
-                    enemy.setX(startX);
-                    enemy.setVisibility(View.GONE);
+                    initialState.setOnBlock(enemy, View.INVISIBLE);
                 }
             });
             animate.start();
             animators.add(animate);
-
-            if (spawnHeartBlock) {
-                enemy.setBackgroundColor(Color.WHITE);
-            } else {
-                int startIndex = numberGenerator.generateBetween(0, 5);
-                int startColour = kotikanColours[startIndex];
-                int endColour = kotikanColours[numberGenerator.generateBetween(0, 5, startIndex)];
-
-                ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), startColour, endColour);
-                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animator) {
-                        enemy.setBackgroundColor((Integer) animator.getAnimatedValue());
-                    }
-                });
-                colorAnimation.setDuration(GameConstants.ENEMY_SLIDE_DURATION);
-                colorAnimation.start();
-            }
+            final int color = spawnHeartBlock ? Color.WHITE : kotikanColours[numberGenerator.generateBetween(0, 5)];
+            enemy.setBackgroundColor(color);
         }
     }
 }
