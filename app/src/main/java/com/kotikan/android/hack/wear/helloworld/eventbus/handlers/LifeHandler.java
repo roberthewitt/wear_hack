@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class LifeHandler implements EventHandler {
 
-    private int lives = GameConstants.STARTING_LIVES;
+    private int lives = GameConstants.LIVES_STARTING_QUANTITY;
     final private Set<Integer> hitBy = new HashSet<>();
 
     @Override
@@ -40,7 +40,7 @@ public class LifeHandler implements EventHandler {
                 }
             }
         } else if (GameStart.class == event) {
-            lives = GameConstants.STARTING_LIVES;
+            lives = GameConstants.LIVES_STARTING_QUANTITY;
             Messages.bus().sendEvent(new LifeChanged(lives), LifeChanged.class);
         } else if (RequestNumberOfLives.class == event) {
             Messages.bus().sendEvent(new NumberOfLivesResponse(lives), NumberOfLivesResponse.class);

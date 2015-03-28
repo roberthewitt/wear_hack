@@ -16,7 +16,7 @@ public class EnemyHeartLogic {
     }
 
     private boolean livesMissing(int lifeCount) {
-        return lifeCount != GameConstants.STARTING_LIVES;
+        return lifeCount != GameConstants.LIVES_MAXIMUM;
     }
     
     private boolean allowedToSpawn() {

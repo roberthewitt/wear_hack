@@ -11,5 +11,6 @@ public class GameConstants {
     final public static double ENEMY_SPAWN_RANDOMISER = 500d;
 
     final public static int COUNTDOWN_MAX_TEXT_SIZE = 100;
-    public static final int STARTING_LIVES = 3;
+    public static final int LIVES_STARTING_QUANTITY = 2;
+    public static final int LIVES_MAXIMUM = 3;
 }

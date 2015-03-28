@@ -36,7 +36,7 @@ public class EnemyHeartLogicTest {
 
         NumberGenerator generator = successGenerator();
 
-        Assert.assertFalse(l.shouldSpawnHeart(generator, GameConstants.STARTING_LIVES));
+        Assert.assertFalse(l.shouldSpawnHeart(generator, GameConstants.LIVES_STARTING_QUANTITY));
     }
 
     @Test
