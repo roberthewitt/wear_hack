@@ -22,7 +22,7 @@ public class LifeDisplayer implements EventHandler {
             LifeChanged changed = (LifeChanged) o;
             int lives = changed.lives;
             int maxChildIndex = lifeContainer.getChildCount() - 1;
-            for (int i = 0; i <= maxChildIndex; i++) {
+            for (int i = maxChildIndex; i >= 0; i--) {
                 final ImageView childAt = (ImageView) lifeContainer.getChildAt(i);
                 int heartImg;
                 if (lives > 0) {
