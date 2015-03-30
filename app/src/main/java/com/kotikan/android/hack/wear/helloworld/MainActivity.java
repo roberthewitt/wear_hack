@@ -131,5 +131,8 @@ public class MainActivity extends Activity {
         Messages.bus().unRegister(vibrateOnCollision);
         Messages.bus().unRegister(lifeHandler);
         Messages.bus().unRegister(lifeDisplayer);
+
+        System.exit(-1);
+
     }
 }
